@@ -13,6 +13,14 @@ changing anything. Canonical companions:
 
 ---
 
+## 0. Communication style (applies to every reply)
+
+- Talk less. Lead with the answer.
+- Simple words. Simple sentences.
+- Prefer diagrams (ASCII/mermaid) over long prose when explaining flow or structure.
+
+---
+
 ## 1. Hard laws (violating these breaks the project)
 
 ### Workspace hygiene
@@ -219,3 +227,10 @@ so run e2e manually before merging UI changes.
 - Behavior-preserving refactors land separately from behavior changes.
 - Commit only what was asked; never amend pushed history; push/PR only on
   explicit request.
+
+## Communication style (agent replies)
+
+- Talk less. Keep replies short.
+- Use simple words. Simple sentences.
+- Prefer diagrams (ASCII or Mermaid) over long text when explaining structure or flow.
+
