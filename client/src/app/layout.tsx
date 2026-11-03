@@ -25,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="bn">
       <body className={`${inter.variable} ${notoBengali.variable} antialiased`}>
         <I18nProvider>
           <AuthProvider>

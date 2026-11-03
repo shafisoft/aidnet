@@ -1,5 +1,6 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
+import i18n from '@/i18n/config'
 import { RouteAccessGuard } from './RouteAccessGuard'
 
 const push = vi.fn()
@@ -40,7 +41,10 @@ const renderGuard = () =>
   )
 
 describe('RouteAccessGuard', () => {
-  beforeEach(() => {
+  beforeEach(async () => {
+    // i18n boots in Bangla for hydration parity; the provider applies the
+    // user's language after mount. Pin English so text assertions match.
+    await i18n.changeLanguage('en')
     push.mockClear()
     mockAuth = { user: null, loading: false }
     mockAdmin = { isSystemAdmin: false, loading: true }

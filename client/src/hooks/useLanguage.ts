@@ -6,7 +6,7 @@ import { LANGUAGES, persistLanguage, type LanguageCode } from '@/i18n/config'
 
 export function useLanguage() {
   const { i18n } = useTranslation()
-  const language = (i18n.resolvedLanguage ?? 'en') as LanguageCode
+  const language = (i18n.resolvedLanguage ?? 'bn') as LanguageCode
 
   const setLanguage = useCallback((code: LanguageCode) => {
     return persistLanguage(code)

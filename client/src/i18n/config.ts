@@ -7,8 +7,8 @@ import bn from './locales/bn.json'
 export const STORAGE_KEY = 'donate.language'
 
 export const LANGUAGES = [
-  { code: 'en', label: 'English' },
   { code: 'bn', label: 'বাংলা' },
+  { code: 'en', label: 'English' },
 ] as const
 
 export type LanguageCode = (typeof LANGUAGES)[number]['code']
@@ -17,28 +17,37 @@ function isLanguageCode(value: string | null): value is LanguageCode {
   return value === 'en' || value === 'bn'
 }
 
-// Resolution order: saved preference → browser language → English.
+// Resolution order: saved preference → browser language → Bangla (default).
 export function detectLanguage(): LanguageCode {
-  if (typeof window === 'undefined') return 'en'
+  if (typeof window === 'undefined') return 'bn'
   const stored = window.localStorage.getItem(STORAGE_KEY)
   if (isLanguageCode(stored)) return stored
-  return navigator.language.toLowerCase().startsWith('bn') ? 'bn' : 'en'
+  return navigator.language.toLowerCase().startsWith('en') ? 'en' : 'bn'
 }
 
 // The app is a client-only static export: one global instance, initialised
-// at import time. Components use useTranslation(); switching goes through
-// persistLanguage so the choice survives reloads.
+// at import time. Hydration law: the static export always renders Bangla, so
+// the first client render must be Bangla too — the saved/browser preference is
+// applied after mount via syncLanguage(). Components use useTranslation();
+// explicit switching goes through persistLanguage so the choice survives
+// reloads.
 if (!i18n.isInitialized) {
   void i18n.use(initReactI18next).init({
     resources: {
       en: { translation: en },
       bn: { translation: bn },
     },
-    lng: detectLanguage(),
+    lng: 'bn',
     fallbackLng: 'en',
     interpolation: { escapeValue: false },
     react: { useSuspense: false },
   })
+}
+
+// Called once from I18nProvider after mount: applies the saved preference
+// (or browser language) post-hydration, so server and client first paint agree.
+export function syncLanguage() {
+  return i18n.changeLanguage(detectLanguage())
 }
 
 export function persistLanguage(language: LanguageCode) {

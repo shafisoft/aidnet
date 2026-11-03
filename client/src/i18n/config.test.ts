@@ -11,13 +11,18 @@ describe('i18n language detection', () => {
     vi.unstubAllGlobals()
   })
 
-  it('defaults to English with no preference and an English browser', () => {
+  it('keeps English for an English browser', () => {
     setBrowserLanguage('en-US')
     expect(detectLanguage()).toBe('en')
   })
 
   it('detects Bangla from the browser language', () => {
     setBrowserLanguage('bn-BD')
+    expect(detectLanguage()).toBe('bn')
+  })
+
+  it('falls back to Bangla for any other browser language', () => {
+    setBrowserLanguage('fr-FR')
     expect(detectLanguage()).toBe('bn')
   })
 
