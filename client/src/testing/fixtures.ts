@@ -98,6 +98,7 @@ export const aPublicCampaign = (
   cover_image_url: null,
   goal_amount: 100000,
   raised_amount: 0,
+  pending_amount: 0,
   currency: 'BDT',
   start_date: null,
   end_date: null,

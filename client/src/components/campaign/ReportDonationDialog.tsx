@@ -19,10 +19,12 @@ const METHODS = ['bkash', 'nagad', 'rocket', 'bank', 'other'] as const
 export function ReportDonationDialog({
   campaignId,
   orgName,
+  currency,
   onClose,
 }: {
   campaignId: string
   orgName: string
+  currency?: string
   onClose: () => void
 }) {
   const { t } = useTranslation()
@@ -84,8 +86,19 @@ export function ReportDonationDialog({
             <h2 className="text-xl font-semibold text-gray-900">
               {t('donationReport.successTitle')}
             </h2>
+            {/* The donor's one-line status: their money is reported, not yet
+                counted — the org confirms it before it joins the total. */}
+            <p>
+              <span className="inline-block rounded-full bg-amber-100 px-3 py-1 text-xs font-medium text-amber-800">
+                {t('donationReport.awaitingChip')}
+              </span>
+            </p>
             <p className="text-sm text-gray-600">
-              {t('donationReport.successBody', { org: orgName })}
+              {t('donationReport.successBody', {
+                org: orgName,
+                amount: Number(amount).toLocaleString(),
+                currency: currency,
+              })}
             </p>
             <button
               type="button"

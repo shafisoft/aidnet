@@ -6,8 +6,15 @@ export function CampaignCard({ campaign }: { campaign: PublicCampaign }) {
   const { t } = useTranslation()
   const goal = campaign.goal_amount
   const raised = campaign.raised_amount ?? 0
+  const pending = campaign.pending_amount ?? 0
+  // Percentages are confirmed-only: the pending segment rides beside the
+  // confirmed fill without ever pushing the total past the track.
   const pct =
     goal && goal > 0 ? Math.min(100, Math.round((raised / goal) * 100)) : 0
+  const pendingPct =
+    goal && goal > 0
+      ? Math.min(100 - pct, Math.round((pending / goal) * 100))
+      : 0
 
   return (
     <Link
@@ -60,11 +67,31 @@ export function CampaignCard({ campaign }: { campaign: PublicCampaign }) {
               <span>{pct}%</span>
             </div>
             <div className="h-2 w-full overflow-hidden rounded-full bg-gray-200">
-              <div
-                className="h-full rounded-full bg-indigo-600"
-                style={{ width: `${pct}%` }}
-              />
+              <div className="flex h-full">
+                <div
+                  className="h-full bg-indigo-600"
+                  style={{ width: `${pct}%` }}
+                />
+                {pending > 0 && (
+                  <div
+                    className="h-full bg-indigo-300"
+                    style={{ width: `${pendingPct}%` }}
+                    title={t('campaignCard.pendingNote', {
+                      amount: pending.toLocaleString(),
+                      currency: campaign.currency,
+                    })}
+                  />
+                )}
+              </div>
             </div>
+            {pending > 0 && (
+              <p className="text-xs text-amber-600">
+                {t('campaignCard.pendingNote', {
+                  amount: pending.toLocaleString(),
+                  currency: campaign.currency,
+                })}
+              </p>
+            )}
           </div>
         )}
 

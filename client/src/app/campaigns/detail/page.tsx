@@ -87,8 +87,13 @@ function CampaignDetailContent() {
 
   const goal = campaign?.goal_amount
   const raised = campaign?.raised_amount ?? 0
+  const pending = campaign?.pending_amount ?? 0
   const pct =
     goal && goal > 0 ? Math.min(100, Math.round((raised / goal) * 100)) : 0
+  const pendingPct =
+    goal && goal > 0
+      ? Math.min(100 - pct, Math.round((pending / goal) * 100))
+      : 0
 
   // Public confirmed donations: the org-reviewed ledger behind the
   // raised total. Reload when the dialog closes (a confirm elsewhere
@@ -241,11 +246,47 @@ function CampaignDetailContent() {
                   </span>
                 </div>
                 <div className="h-2 w-full overflow-hidden rounded-full bg-gray-200">
-                  <div
-                    className="h-full rounded-full bg-indigo-600"
-                    style={{ width: `${pct}%` }}
-                  />
+                  <div className="flex h-full">
+                    <div
+                      className="h-full bg-indigo-600"
+                      style={{ width: `${pct}%` }}
+                    />
+                    {pending > 0 && (
+                      <div
+                        className="h-full bg-indigo-300"
+                        style={{ width: `${pendingPct}%` }}
+                        title={t('campaignDetail.pendingLegend', {
+                          amount: pending.toLocaleString(),
+                          currency: campaign.currency,
+                        })}
+                      />
+                    )}
+                  </div>
                 </div>
+                {pending > 0 && (
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-gray-500">
+                    <span className="flex items-center gap-1.5">
+                      <span
+                        className="h-2 w-2 rounded-full bg-indigo-600"
+                        aria-hidden="true"
+                      />
+                      {t('campaignDetail.confirmedLegend', {
+                        amount: raised.toLocaleString(),
+                        currency: campaign.currency,
+                      })}
+                    </span>
+                    <span className="flex items-center gap-1.5">
+                      <span
+                        className="h-2 w-2 rounded-full bg-indigo-300"
+                        aria-hidden="true"
+                      />
+                      {t('campaignDetail.pendingLegend', {
+                        amount: pending.toLocaleString(),
+                        currency: campaign.currency,
+                      })}
+                    </span>
+                  </div>
+                )}
               </div>
             )}
 
@@ -332,6 +373,7 @@ function CampaignDetailContent() {
         <ReportDonationDialog
           campaignId={campaign.id}
           orgName={campaign.org_name}
+          currency={campaign.currency ?? undefined}
           onClose={() => setShowReportDialog(false)}
         />
       )}

@@ -9,6 +9,10 @@ const SLUG = 'demo-campaign-1'
 // start — never a hard-coded number. The unique reference ties the two
 // tests together and keeps stale pendings from crashed runs irrelevant.
 let reference = ''
+// Pending amounts are shared state on the demo campaign (crashed runs can
+// leave stale pendings behind), so every pending assertion is relative to
+// what was already awaiting confirmation before this run's report.
+let pendingBefore = 0
 
 async function readRaisedAmount(page: import('@playwright/test').Page) {
   const text = await page
@@ -18,6 +22,13 @@ async function readRaisedAmount(page: import('@playwright/test').Page) {
   const match = text?.match(/([\d,]+) BDT raised/)
   expect(match, `raised line in "${text}"`).toBeTruthy()
   return Number((match![1] ?? '0').replace(/,/g, ''))
+}
+
+async function readPendingAmount(page: import('@playwright/test').Page) {
+  const legend = page.getByText(/Awaiting confirmation: /)
+  if ((await legend.count()) === 0) return 0
+  const match = (await legend.first().textContent())?.match(/([\d,]+) BDT/)
+  return match ? Number(match[1].replace(/,/g, '')) : 0
 }
 
 async function loginAsOwner(page: import('@playwright/test').Page) {
@@ -31,6 +42,7 @@ test.describe.serial('Donation reports', () => {
     reference = `E2E-TRX-${Date.now()}-${Math.floor(Math.random() * 1e6)}`
     await gotoStable(page, `/campaigns/detail?slug=${SLUG}`)
     const raisedBefore = await readRaisedAmount(page)
+    pendingBefore = await readPendingAmount(page)
 
     await page.getByRole('button', { name: 'I donated' }).click()
     await page.getByLabel('Amount', { exact: true }).fill('750')
@@ -42,10 +54,26 @@ test.describe.serial('Donation reports', () => {
     await expect(
       page.getByRole('heading', { name: 'Thank you!' })
     ).toBeVisible()
+    // The donor is told exactly where their money stands: reported and
+    // awaiting the fundraiser's confirmation, not yet part of the total.
+    await expect(
+      page.getByText('Awaiting confirmation', { exact: true })
+    ).toBeVisible()
+    await expect(
+      page.getByText(/until they confirm it.*awaiting confirmation/i)
+    ).toBeVisible()
 
-    // Pending reports never move the public total.
+    // Pending reports never move the public total, but they DO show as
+    // awaiting confirmation — on the detail page…
     await gotoStable(page, `/campaigns/detail?slug=${SLUG}`)
     expect(await readRaisedAmount(page)).toBe(raisedBefore)
+    expect(await readPendingAmount(page)).toBe(pendingBefore + 750)
+
+    // …and on the campaign card in the public listing.
+    await gotoStable(page, '/campaigns')
+    await expect(
+      page.getByText('+750 BDT awaiting confirmation').first()
+    ).toBeVisible()
   })
 
   test('When the organization confirms a report, raised increases', async ({
@@ -91,5 +119,8 @@ test.describe.serial('Donation reports', () => {
     // …and the public total moves only on confirmation.
     await gotoStable(page, `/campaigns/detail?slug=${SLUG}`)
     expect(await readRaisedAmount(page)).toBe(raisedBefore + 750)
+    // The confirmed amount leaves the pending display — back to whatever
+    // was already awaiting confirmation before this run reported.
+    expect(await readPendingAmount(page)).toBe(pendingBefore)
   })
 })

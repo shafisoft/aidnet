@@ -102,6 +102,9 @@ export type PublicCampaign = {
   cover_image_url: string | null
   goal_amount: number | null
   raised_amount: number
+  /** Donor-reported transfers awaiting the org's confirmation — shown on
+   * progress bars but never part of raised_amount until confirmed. */
+  pending_amount: number
   currency: string | null
   start_date: string | null
   end_date: string | null
