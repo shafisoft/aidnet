@@ -94,10 +94,10 @@ changing anything. Canonical companions:
 - Components are stateless: props in, callbacks out. Only containers touch
   services. All state lives in containers/hooks/providers.
 - Auth uses the Supabase JS client via the `useAuth` hook / auth provider — not
-  NextJS auth. There is exactly one custom edge function:
-  `supabase/functions/og` (crawler-facing Open Graph previews for shared
-  campaign links; its pure helpers live in `client/src/lib/ogPreview.ts` and
-  are unit-tested there). App pages never call it.
+  NextJS auth. No custom edge functions in `supabase/functions/` — the sole
+  exception is `og` (crawler-facing Open Graph previews for shared campaign
+  links; its pure helpers live in `client/src/lib/ogPreview.ts` and are
+  unit-tested there). App pages never call it. Do not add more.
 
 ---
 
@@ -167,16 +167,16 @@ so run e2e manually before merging UI changes.
    repository/service — do not grow mixed-audience classes.
 
 **Deploy to production**
-- Backend: link the hosted project, then push migrations. One custom edge
-  function exists (`supabase/functions/og`) — deploy it once and set its env:
+- Backend: link the hosted project, then push migrations. Custom edge functions
+  are banned — the sole exception is `og`, deployed once with its env:
   ```sh
   supabase functions deploy og --project-ref <ref> --config-path supabase/config.production.toml
   supabase secrets set SITE_URL=https://<site-origin>[/<base-path>] --project-ref <ref>
   # then add the repo secret NEXT_PUBLIC_OG_PREVIEW_URL=https://<ref>.supabase.co/functions/v1/og
   # and re-run the Pages deploy so share links pick it up
   ```
-  It must never grow into app logic: it serves OG HTML to link-preview
-  crawlers and 302s humans; `verify_jwt = false` is set in both config files.
+  `og` must stay what it is — OG HTML to link-preview crawlers, 302 to humans
+  (`verify_jwt = false` in both config files). Do not use it as a precedent.
   ```sh
   supabase link --project-ref <ref> --config-path supabase/config.production.toml
   supabase db push --config-path supabase/config.production.toml
