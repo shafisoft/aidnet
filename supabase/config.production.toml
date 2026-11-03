@@ -118,3 +118,9 @@ s3_host = "env(S3_HOST)"
 s3_region = "env(S3_REGION)"
 s3_access_key = "env(S3_ACCESS_KEY)"
 s3_secret_key = "env(S3_SECRET_KEY)"
+
+# The og function is crawler-facing (link previews): crawlers carry no
+# JWT, so auth verification is off. Authorization is not needed — it only
+# reads through the public get_public_campaign_by_slug RPC.
+[functions.og]
+verify_jwt = false

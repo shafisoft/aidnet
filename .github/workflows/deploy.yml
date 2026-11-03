@@ -76,6 +76,10 @@ jobs:
           NEXT_PUBLIC_BASE_PATH: ${{ steps.pages.outputs.base_path }}
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+          # Shared links point at the og edge function when deployed
+          # (supabase functions deploy og + SITE_URL secret); empty =
+          # share links go straight to the page.
+          NEXT_PUBLIC_OG_PREVIEW_URL: ${{ secrets.NEXT_PUBLIC_OG_PREVIEW_URL }}
         run: npm run build
 
       - uses: actions/configure-pages@v5

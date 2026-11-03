@@ -94,7 +94,10 @@ changing anything. Canonical companions:
 - Components are stateless: props in, callbacks out. Only containers touch
   services. All state lives in containers/hooks/providers.
 - Auth uses the Supabase JS client via the `useAuth` hook / auth provider — not
-  NextJS auth. There are no custom edge functions in `supabase/functions/`.
+  NextJS auth. There is exactly one custom edge function:
+  `supabase/functions/og` (crawler-facing Open Graph previews for shared
+  campaign links; its pure helpers live in `client/src/lib/ogPreview.ts` and
+  are unit-tested there). App pages never call it.
 
 ---
 
@@ -164,9 +167,16 @@ so run e2e manually before merging UI changes.
    repository/service — do not grow mixed-audience classes.
 
 **Deploy to production**
-- Backend: link the hosted project, then push migrations. No custom edge
-  functions exist (`supabase/functions/` is empty), so `supabase functions deploy`
-  is a no-op — do not rely on it.
+- Backend: link the hosted project, then push migrations. One custom edge
+  function exists (`supabase/functions/og`) — deploy it once and set its env:
+  ```sh
+  supabase functions deploy og --project-ref <ref> --config-path supabase/config.production.toml
+  supabase secrets set SITE_URL=https://<site-origin>[/<base-path>] --project-ref <ref>
+  # then add the repo secret NEXT_PUBLIC_OG_PREVIEW_URL=https://<ref>.supabase.co/functions/v1/og
+  # and re-run the Pages deploy so share links pick it up
+  ```
+  It must never grow into app logic: it serves OG HTML to link-preview
+  crawlers and 302s humans; `verify_jwt = false` is set in both config files.
   ```sh
   supabase link --project-ref <ref> --config-path supabase/config.production.toml
   supabase db push --config-path supabase/config.production.toml
