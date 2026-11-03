@@ -90,11 +90,15 @@ function EditCampaignForm({
   campaign: Campaign
   orgId: string
 }) {
+  // Caps apply when the campaign belongs to the personal workspace the
+  // user is currently in (same guard the publish button uses).
+  const { currentOrg } = useOrganization()
   const controller = useCampaignForm({
     orgId,
     mode: 'edit',
     campaignId: campaign.id,
     initial: campaign,
+    isPersonal: currentOrg?.id === orgId && currentOrg.kind === 'personal',
   })
   return <CampaignForm controller={controller} />
 }

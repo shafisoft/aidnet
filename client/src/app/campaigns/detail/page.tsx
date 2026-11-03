@@ -9,6 +9,7 @@ import { publicCampaignService } from '@/services/PublicCampaignService'
 import { donationReportService } from '@/services/DonationReportService'
 import { MapPin, Copy, Check } from 'lucide-react'
 import { ReportDonationDialog } from '@/components/campaign/ReportDonationDialog'
+import { ShareCampaign } from '@/components/campaign/ShareCampaign'
 import type { PublicCampaign, PublicDonationReport } from '@/types'
 import { usePageTitle } from '@/hooks/usePageTitle'
 import { useAuth } from '@/hooks/useAuth'
@@ -221,6 +222,10 @@ function CampaignDetailContent() {
                 className="w-full rounded-lg shadow"
               />
             )}
+
+            {/* Distribution is the fundraiser's job — offer the share row
+                on every public campaign view. */}
+            <ShareCampaign slug={campaign.slug} title={campaign.title} />
 
             {campaign.description && (
               <p className="whitespace-pre-line leading-relaxed text-gray-700">

@@ -106,6 +106,18 @@ describe('CampaignRepository', () => {
     })
   })
 
+  it('publish calls publish_campaign with p_campaign_id', async () => {
+    const gw = createMockRpcGateway({
+      publish_campaign: { data: [aCampaign({ status: 'live' })] },
+    })
+    const pub = await new CampaignRepository(gw).publish('camp-1')
+
+    expect(pub.data?.[0]?.status).toBe('live')
+    expect(gw.callsTo('publish_campaign')[0].params).toEqual({
+      p_campaign_id: 'camp-1',
+    })
+  })
+
   it('campaign tags use the CampaignTag functions', async () => {
     const tags = [aCampaignTag()]
     const gw = createMockRpcGateway({

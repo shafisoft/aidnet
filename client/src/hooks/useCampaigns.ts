@@ -54,6 +54,18 @@ export function useCampaigns(orgId: string | null | undefined) {
     [load]
   )
 
+  const publish = useCallback(
+    async (campaignId: string) => {
+      // Personal-org path: publish_campaign skips the review queue (caps
+      // enforced in the function). The DB rejects it for regular orgs.
+      const { error: err } = await campaignService.publish(campaignId)
+      if (err) return { error: err }
+      await load()
+      return { error: null }
+    },
+    [load]
+  )
+
   const remove = useCallback(
     async (campaignId: string) => {
       const { error: err } = await campaignService.deleteCampaign(campaignId)
@@ -73,7 +85,16 @@ export function useCampaigns(orgId: string | null | undefined) {
     return { error: null }
   }, [])
 
-  return { campaigns, loading, error, refetch: load, submit, remove, setTags }
+  return {
+    campaigns,
+    loading,
+    error,
+    refetch: load,
+    submit,
+    publish,
+    remove,
+    setTags,
+  }
 }
 
 export function useCampaignTags() {

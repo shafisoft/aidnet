@@ -17,9 +17,13 @@ function DashboardCampaignsContent() {
   const { t } = useTranslation()
   const { currentOrg } = useOrganization()
   const { hasPermission } = usePermissions()
-  const { campaigns, loading, error, submit, remove } = useCampaigns(
+  const { campaigns, loading, error, submit, publish, remove } = useCampaigns(
     currentOrg?.id
   )
+  // Personal orgs self-publish (publish_campaign, caps in the DB);
+  // organizations keep the system-admin review queue.
+  const isPersonal = currentOrg?.kind === 'personal'
+  const pipelineAction = isPersonal ? publish : submit
 
   usePageTitle(t('titles.dashboard'))
 
@@ -66,7 +70,8 @@ function DashboardCampaignsContent() {
               key={c.id}
               campaign={c}
               canDelete={hasPermission('campaigns:delete')}
-              onSubmit={() => submit(c.id)}
+              isPersonal={isPersonal}
+              onPipelineAction={() => pipelineAction(c.id)}
               onRemove={() => remove(c.id)}
             />
           ))}
@@ -79,12 +84,14 @@ function DashboardCampaignsContent() {
 function CampaignRow({
   campaign,
   canDelete,
-  onSubmit,
+  isPersonal,
+  onPipelineAction,
   onRemove,
 }: {
   campaign: ReturnType<typeof useCampaigns>['campaigns'][number]
   canDelete: boolean
-  onSubmit: () => void
+  isPersonal: boolean
+  onPipelineAction: () => void
   onRemove: () => void
 }) {
   const { t } = useTranslation()
@@ -137,10 +144,12 @@ function CampaignRow({
         {c.status === 'draft' || c.status === 'rejected' ? (
           <button
             type="button"
-            onClick={onSubmit}
+            onClick={onPipelineAction}
             className="min-h-11 rounded-md bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
           >
-            {t('dashboardCampaigns.submitReview')}
+            {isPersonal
+              ? t('dashboardCampaigns.publish')
+              : t('dashboardCampaigns.submitReview')}
           </button>
         ) : null}
         <Link

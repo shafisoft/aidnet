@@ -22,6 +22,7 @@ export type Database = {
           user_agent: string | null
           user_id: string | null
         }
+        ComputedFields: never
         Insert: {
           action: string
           created_at?: string | null
@@ -90,6 +91,7 @@ export type Database = {
           relationship: string | null
           updated_at: string | null
         }
+        ComputedFields: never
         Insert: {
           campaign_id: string
           created_at?: string | null
@@ -146,6 +148,7 @@ export type Database = {
           rocket_number: string | null
           updated_at: string | null
         }
+        ComputedFields: never
         Insert: {
           bank_account_name?: string | null
           bank_account_number?: string | null
@@ -204,6 +207,7 @@ export type Database = {
           created_at: string | null
           tag_id: string
         }
+        ComputedFields: never
         Insert: {
           campaign_id: string
           created_at?: string | null
@@ -238,6 +242,7 @@ export type Database = {
           label_bn: string | null
           slug: string
         }
+        ComputedFields: never
         Insert: {
           id?: string
           label: string
@@ -276,6 +281,7 @@ export type Database = {
           verified_at: string | null
           verified_by: string | null
         }
+        ComputedFields: never
         Insert: {
           address?: string | null
           cover_image_url?: string | null
@@ -382,6 +388,7 @@ export type Database = {
           rocket_number: string | null
           updated_at: string | null
         }
+        ComputedFields: never
         Insert: {
           bank_account_name?: string | null
           bank_account_number?: string | null
@@ -467,6 +474,7 @@ export type Database = {
           status: string
           updated_at: string | null
         }
+        ComputedFields: never
         Insert: {
           amount: number
           campaign_id: string
@@ -553,6 +561,7 @@ export type Database = {
           role: string | null
           token: string
         }
+        ComputedFields: never
         Insert: {
           accepted_at?: string | null
           created_at?: string | null
@@ -621,6 +630,7 @@ export type Database = {
           updated_by: string | null
           website_url: string | null
         }
+        ComputedFields: never
         Insert: {
           address?: string | null
           contact_email?: string | null
@@ -694,6 +704,7 @@ export type Database = {
           status: string | null
           user_id: string
         }
+        ComputedFields: never
         Insert: {
           created_org_id?: string | null
           id?: string
@@ -771,6 +782,7 @@ export type Database = {
           updated_at: string | null
           user_id: string | null
         }
+        ComputedFields: never
         Insert: {
           created_at?: string | null
           id?: string
@@ -845,6 +857,7 @@ export type Database = {
           status: string
           updated_at: string | null
         }
+        ComputedFields: never
         Insert: {
           billing_period?: string
           created_at?: string | null
@@ -907,11 +920,13 @@ export type Database = {
           kind: string
           logo_url: string | null
           name: string
+          org_type: string
           settings: Json | null
           slug: string
           status: string | null
           updated_at: string | null
         }
+        ComputedFields: never
         Insert: {
           created_at?: string | null
           created_by?: string | null
@@ -920,6 +935,7 @@ export type Database = {
           kind?: string
           logo_url?: string | null
           name: string
+          org_type?: string
           settings?: Json | null
           slug: string
           status?: string | null
@@ -933,6 +949,7 @@ export type Database = {
           kind?: string
           logo_url?: string | null
           name?: string
+          org_type?: string
           settings?: Json | null
           slug?: string
           status?: string | null
@@ -955,6 +972,7 @@ export type Database = {
           permission: string
           role: string
         }
+        ComputedFields: never
         Insert: {
           created_at?: string | null
           id?: string
@@ -992,6 +1010,7 @@ export type Database = {
           is_system_role: boolean | null
           name: string
         }
+        ComputedFields: never
         Insert: {
           created_at?: string | null
           description?: string | null
@@ -1020,6 +1039,7 @@ export type Database = {
           payment_status: string | null
           plan_id: string
         }
+        ComputedFields: never
         Insert: {
           action: string
           amount?: number | null
@@ -1085,6 +1105,7 @@ export type Database = {
           price_yearly: number | null
           updated_at: string | null
         }
+        ComputedFields: never
         Insert: {
           created_at?: string | null
           description?: string | null
@@ -1109,6 +1130,69 @@ export type Database = {
         }
         Relationships: []
       }
+      todos: {
+        Row: {
+          completed: boolean | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          id: string
+          organization_id: string
+          title: string
+          updated_at: string | null
+        }
+        ComputedFields: never
+        Insert: {
+          completed?: boolean | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          organization_id: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          completed?: boolean | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          organization_id?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'todos_created_by_fkey'
+            columns: ['created_by']
+            isOneToOne: false
+            referencedRelation: 'profile_view'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'todos_organization_id_fkey'
+            columns: ['organization_id']
+            isOneToOne: false
+            referencedRelation: 'organization_detail_view'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'todos_organization_id_fkey'
+            columns: ['organization_id']
+            isOneToOne: false
+            referencedRelation: 'organization_view'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'todos_organization_id_fkey'
+            columns: ['organization_id']
+            isOneToOne: false
+            referencedRelation: 'organizations'
+            referencedColumns: ['id']
+          },
+        ]
+      }
     }
     Views: {
       member_view: {
@@ -1124,6 +1208,7 @@ export type Database = {
           status: string | null
           user_id: string | null
         }
+        ComputedFields: never
         Relationships: [
           {
             foreignKeyName: 'organization_members_organization_id_fkey'
@@ -1167,6 +1252,7 @@ export type Database = {
           slug: string | null
           updated_at: string | null
         }
+        ComputedFields: never
         Relationships: []
       }
       organization_view: {
@@ -1184,6 +1270,7 @@ export type Database = {
           user_id: string | null
           user_role: string | null
         }
+        ComputedFields: never
         Relationships: [
           {
             foreignKeyName: 'organization_members_user_id_fkey'
@@ -1204,6 +1291,7 @@ export type Database = {
           metadata: Json | null
           updated_at: string | null
         }
+        ComputedFields: never
         Insert: {
           avatar_url?: string | null
           created_at?: string | null
@@ -1232,6 +1320,7 @@ export type Database = {
           is_system_role: boolean | null
           name: string | null
         }
+        ComputedFields: never
         Insert: {
           created_at?: string | null
           description?: string | null
@@ -1250,6 +1339,7 @@ export type Database = {
       }
     }
     Functions: {
+      __probe_rest_target: { Args: Record<PropertyKey, never>; Returns: number }
       accept_invite: { Args: { p_token: string }; Returns: boolean }
       add_organization_member: {
         Args: {
@@ -1417,6 +1507,10 @@ export type Database = {
           isSetofReturn: true
         }
       }
+      create_personal_org: {
+        Args: { p_name: string; p_slug: string }
+        Returns: string
+      }
       create_subscription_plan: {
         Args: {
           p_description: string
@@ -1443,8 +1537,32 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      create_todo: {
+        Args: {
+          p_description?: string
+          p_organization_id: string
+          p_title: string
+        }
+        Returns: {
+          completed: boolean | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          id: string
+          organization_id: string
+          title: string
+          updated_at: string | null
+        }[]
+        SetofOptions: {
+          from: '*'
+          to: 'todos'
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       delete_campaign: { Args: { p_campaign_id: string }; Returns: boolean }
       delete_organization: { Args: { target_org_id: string }; Returns: boolean }
+      delete_todo: { Args: { p_todo_id: string }; Returns: boolean }
       ensure_my_personal_org: {
         Args: Record<PropertyKey, never>
         Returns: string
@@ -1735,7 +1853,7 @@ export type Database = {
       }
       get_my_profile: {
         Args: Record<PropertyKey, never>
-        Returns: unknown[]
+        Returns: Database['shared']['Tables']['profiles']['Row'][]
         SetofOptions: {
           from: '*'
           to: 'profiles'
@@ -1803,6 +1921,7 @@ export type Database = {
           created_by: string
           description: string
           id: string
+          kind: string
           logo_url: string
           member_count: number
           name: string
@@ -1954,7 +2073,7 @@ export type Database = {
           created_at: string
           description: string
           id: string
-          logo_url: string | null
+          logo_url: string
           name: string
           slug: string
         }[]
@@ -2031,6 +2150,25 @@ export type Database = {
           total_users: number
         }[]
       }
+      get_todos: {
+        Args: { p_organization_id: string }
+        Returns: {
+          completed: boolean | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          id: string
+          organization_id: string
+          title: string
+          updated_at: string | null
+        }[]
+        SetofOptions: {
+          from: '*'
+          to: 'todos'
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       get_user_profile: {
         Args: { target_user_id: string }
         Returns: {
@@ -2101,6 +2239,38 @@ export type Database = {
           id: string
           status: string
         }[]
+      }
+      publish_campaign: {
+        Args: { p_campaign_id: string }
+        Returns: {
+          address: string | null
+          cover_image_url: string | null
+          created_at: string | null
+          created_by: string | null
+          currency: string | null
+          description: string | null
+          end_date: string | null
+          goal_amount: number | null
+          id: string
+          is_active: boolean | null
+          is_zakat_eligible: boolean | null
+          org_id: string
+          raised_amount: number
+          slug: string
+          start_date: string | null
+          status: Database['donate']['Enums']['campaign_status'] | null
+          title: string
+          updated_at: string | null
+          verification_notes: string | null
+          verified_at: string | null
+          verified_by: string | null
+        }[]
+        SetofOptions: {
+          from: '*'
+          to: 'campaigns'
+          isOneToOne: false
+          isSetofReturn: true
+        }
       }
       reject_campaign: {
         Args: { p_campaign_id: string; p_notes?: string }
@@ -2422,6 +2592,30 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      update_todo: {
+        Args: {
+          p_completed?: boolean
+          p_description?: string
+          p_title?: string
+          p_todo_id: string
+        }
+        Returns: {
+          completed: boolean | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          id: string
+          organization_id: string
+          title: string
+          updated_at: string | null
+        }[]
+        SetofOptions: {
+          from: '*'
+          to: 'todos'
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       upsert_donation_methods: {
         Args: {
           p_bank_account_name?: string
@@ -2518,190 +2712,54 @@ export type Database = {
       [_ in never]: never
     }
   }
-  graphql_public: {
+  shared: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string | null
+          email: string
+          full_name: string | null
+          id: string
+          is_system_admin: boolean | null
+          metadata: Json | null
+          updated_at: string | null
+        }
+        ComputedFields: never
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
+          email: string
+          full_name?: string | null
+          id: string
+          is_system_admin?: boolean | null
+          metadata?: Json | null
+          updated_at?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string | null
+          email?: string
+          full_name?: string | null
+          id?: string
+          is_system_admin?: boolean | null
+          metadata?: Json | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      graphql: {
-        Args: {
-          extensions?: Json
-          operationName?: string
-          query?: string
-          variables?: Json
-        }
-        Returns: Json
-      }
+      [_ in never]: never
     }
     Enums: {
       [_ in never]: never
     }
     CompositeTypes: {
       [_ in never]: never
-    }
-  }
-  public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      pg_all_foreign_keys: {
-        Row: {
-          fk_columns: unknown[] | null
-          fk_constraint_name: unknown
-          fk_schema_name: unknown
-          fk_table_name: unknown
-          fk_table_oid: unknown
-          is_deferrable: boolean | null
-          is_deferred: boolean | null
-          match_type: string | null
-          on_delete: string | null
-          on_update: string | null
-          pk_columns: unknown[] | null
-          pk_constraint_name: unknown
-          pk_index_name: unknown
-          pk_schema_name: unknown
-          pk_table_name: unknown
-          pk_table_oid: unknown
-        }
-        Relationships: []
-      }
-      tap_funky: {
-        Row: {
-          args: string | null
-          is_definer: boolean | null
-          is_strict: boolean | null
-          is_visible: boolean | null
-          kind: unknown
-          langoid: unknown
-          name: unknown
-          oid: unknown
-          owner: unknown
-          returns: string | null
-          returns_set: boolean | null
-          schema: unknown
-          volatility: string | null
-        }
-        Relationships: []
-      }
-    }
-    Functions: {
-      _cleanup: { Args: Record<PropertyKey, never>; Returns: boolean }
-      _contract_on: { Args: { '': string }; Returns: unknown }
-      _currtest: { Args: Record<PropertyKey, never>; Returns: number }
-      _db_privs: { Args: Record<PropertyKey, never>; Returns: unknown[] }
-      _extensions: { Args: Record<PropertyKey, never>; Returns: unknown[] }
-      _get: { Args: { '': string }; Returns: number }
-      _get_latest: { Args: { '': string }; Returns: number[] }
-      _get_note: { Args: { '': string }; Returns: string }
-      _is_verbose: { Args: Record<PropertyKey, never>; Returns: boolean }
-      _prokind: { Args: { p_oid: unknown }; Returns: unknown }
-      _query: { Args: { '': string }; Returns: string }
-      _refine_vol: { Args: { '': string }; Returns: string }
-      _retval: { Args: { '': string }; Returns: string }
-      _table_privs: { Args: Record<PropertyKey, never>; Returns: unknown[] }
-      _temptypes: { Args: { '': string }; Returns: string }
-      _todo: { Args: Record<PropertyKey, never>; Returns: string }
-      col_is_null:
-        | {
-            Args: {
-              column_name: unknown
-              description?: string
-              schema_name: unknown
-              table_name: unknown
-            }
-            Returns: string
-          }
-        | {
-            Args: {
-              column_name: unknown
-              description?: string
-              table_name: unknown
-            }
-            Returns: string
-          }
-      col_not_null:
-        | {
-            Args: {
-              column_name: unknown
-              description?: string
-              schema_name: unknown
-              table_name: unknown
-            }
-            Returns: string
-          }
-        | {
-            Args: {
-              column_name: unknown
-              description?: string
-              table_name: unknown
-            }
-            Returns: string
-          }
-      diag:
-        | {
-            Args: { msg: unknown }
-            Returns: {
-              error: true
-            } & 'Could not choose the best candidate function between: public.diag(msg => text), public.diag(msg => anyelement). Try renaming the parameters or the function itself in the database so function overloading can be resolved'
-          }
-        | {
-            Args: { msg: string }
-            Returns: {
-              error: true
-            } & 'Could not choose the best candidate function between: public.diag(msg => text), public.diag(msg => anyelement). Try renaming the parameters or the function itself in the database so function overloading can be resolved'
-          }
-      diag_test_name: { Args: { '': string }; Returns: string }
-      do_tap:
-        | { Args: Record<PropertyKey, never>; Returns: string[] }
-        | { Args: { '': string }; Returns: string[] }
-      fail:
-        | { Args: Record<PropertyKey, never>; Returns: string }
-        | { Args: { '': string }; Returns: string }
-      findfuncs: { Args: { '': string }; Returns: string[] }
-      finish: { Args: { exception_on_failure?: boolean }; Returns: string[] }
-      format_type_string: { Args: { '': string }; Returns: string }
-      has_unique: { Args: { '': string }; Returns: string }
-      in_todo: { Args: Record<PropertyKey, never>; Returns: boolean }
-      is_empty: { Args: { '': string }; Returns: string }
-      isnt_empty: { Args: { '': string }; Returns: string }
-      lives_ok: { Args: { '': string }; Returns: string }
-      no_plan: { Args: Record<PropertyKey, never>; Returns: boolean[] }
-      num_failed: { Args: Record<PropertyKey, never>; Returns: number }
-      os_name: { Args: Record<PropertyKey, never>; Returns: string }
-      pass:
-        | { Args: Record<PropertyKey, never>; Returns: string }
-        | { Args: { '': string }; Returns: string }
-      pg_version: { Args: Record<PropertyKey, never>; Returns: string }
-      pg_version_num: { Args: Record<PropertyKey, never>; Returns: number }
-      pgtap_version: { Args: Record<PropertyKey, never>; Returns: number }
-      runtests:
-        | { Args: Record<PropertyKey, never>; Returns: string[] }
-        | { Args: { '': string }; Returns: string[] }
-      skip:
-        | { Args: { '': string }; Returns: string }
-        | { Args: { how_many: number; why: string }; Returns: string }
-      throws_ok: { Args: { '': string }; Returns: string }
-      todo:
-        | { Args: { how_many: number }; Returns: boolean[] }
-        | { Args: { how_many: number; why: string }; Returns: boolean[] }
-        | { Args: { why: string }; Returns: boolean[] }
-        | { Args: { how_many: number; why: string }; Returns: boolean[] }
-      todo_end: { Args: Record<PropertyKey, never>; Returns: boolean[] }
-      todo_start:
-        | { Args: Record<PropertyKey, never>; Returns: boolean[] }
-        | { Args: { '': string }; Returns: boolean[] }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      _time_trial_type: {
-        a_time: number | null
-      }
     }
   }
 }
@@ -2832,10 +2890,7 @@ export const Constants = {
       ],
     },
   },
-  graphql_public: {
-    Enums: {},
-  },
-  public: {
+  shared: {
     Enums: {},
   },
 } as const

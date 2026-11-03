@@ -104,6 +104,15 @@ export class CampaignService {
     return { data: data?.[0] ?? null, error: null }
   }
 
+  async publish(campaignId: string): ServiceData<CampaignRow> {
+    // publish_campaign RETURNS SETOF campaigns → PostgREST wraps the row;
+    // unwrap. Same shape as submitForReview, but only personal orgs may
+    // call it (enforced in the function, not here).
+    const { data, error } = await this.campaignRepo.publish(campaignId)
+    if (error) return { data: null, error }
+    return { data: data?.[0] ?? null, error: null }
+  }
+
   async getCampaignTags(): ServiceData<CampaignTag[]> {
     return this.campaignRepo.getCampaignTags()
   }

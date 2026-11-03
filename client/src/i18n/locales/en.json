@@ -310,7 +310,8 @@
     "submit": "Send report",
     "submitting": "Sending...",
     "successTitle": "Thank you!",
-    "successBody": "Your report was sent to {{org}}. It will appear on the campaign once they confirm it.",
+    "successBody": "Your report was sent to {{org}} for confirmation. Until they confirm it, your {{amount}} {{currency}} shows on the campaign as “awaiting confirmation” and is not part of the raised total yet.",
+    "awaitingChip": "Awaiting confirmation",
     "close": "Close",
     "noMoneyNote": "This reports a transfer you already made — it does not move money. See the",
     "confirmedHeading": "Confirmed donations",
@@ -324,8 +325,7 @@
     "confirm": "Confirm",
     "reject": "Reject",
     "allCampaigns": "All campaigns",
-    "filterAria": "Filter by campaign",
-    "awaitingChip": "Awaiting confirmation"
+    "filterAria": "Filter by campaign"
   },
   "members": {
     "hint": "“Add” directly adds a member who already has an account; “Invite” creates an invitation they can accept.",
@@ -395,13 +395,13 @@
     "seeAll": "See all →",
     "loading": "Loading organization...",
     "notFoundTitle": "Organization Not Found",
+    "loadFailed": "We couldn't load this organization. Please try again later.",
     "noCampaigns": "No live campaigns yet.",
     "created": "On AidNet since {{date}}",
     "statCampaigns": "Live campaigns",
     "statMoney": "{{amount}} {{currency}}",
     "statRaisedLabel": "Raised so far",
-    "statGoalLabel": "Combined goal",
-    "loadFailed": "We couldn't load this organization. Please try again later."
+    "statGoalLabel": "Combined goal"
   },
   "selector": {
     "title": "Select an Organization",
@@ -480,8 +480,8 @@
   "campaignCard": {
     "view": "View campaign →",
     "raised": "{{amount}} {{currency}} raised",
-    "zakatBadge": "Zakat",
-    "pendingNote": "+{{amount}} {{currency}} awaiting confirmation"
+    "pendingNote": "+{{amount}} {{currency}} awaiting confirmation",
+    "zakatBadge": "Zakat"
   },
   "campaignDetail": {
     "back": "← Back to campaigns",
@@ -489,6 +489,8 @@
     "zakatEligible": "Zakat Eligible",
     "editCampaign": "Edit campaign",
     "raisedOfGoal": "{{pct}}% of {{goal}} {{currency}}",
+    "confirmedLegend": "Confirmed: {{amount}} {{currency}}",
+    "pendingLegend": "Awaiting confirmation: {{amount}} {{currency}}",
     "goal": "Goal: {{amount}} {{currency}}",
     "starts": "Starts: {{date}}",
     "ends": "Ends: {{date}}",
@@ -503,9 +505,7 @@
     "qrAlt": "Donation QR code",
     "address": "Where the work happens",
     "copy": "Copy",
-    "copied": "Copied",
-    "confirmedLegend": "Confirmed: {{amount}} {{currency}}",
-    "pendingLegend": "Awaiting confirmation: {{amount}} {{currency}}"
+    "copied": "Copied"
   },
   "campaignNew": {
     "title": "New Campaign",
@@ -534,7 +534,8 @@
     "createFirst": "Create your first campaign",
     "submitReview": "Submit for Review",
     "deleteConfirm": "Delete campaign \"{{title}}\"?",
-    "raisedOfGoal": "{{raised}} of {{goal}} raised"
+    "raisedOfGoal": "{{raised}} of {{goal}} raised",
+    "publish": "Publish"
   },
   "profile": {
     "organization": "Organization",
@@ -595,6 +596,7 @@
     "loadMore": "Load More",
     "activate": "Activate",
     "suspend": "Suspend",
+    "suspendConfirm": "Suspend {{name}}? Its campaigns will be hidden from the public site immediately.",
     "statusUpdated": "Organization status updated to {{status}}.",
     "failedStatusUpdate": "Failed to update organization status",
     "headerSlug": "Slug",
@@ -654,8 +656,7 @@
     "beneficiaryNone": "No person-beneficiary details were provided for this campaign.",
     "pendingOrgRequests": "Org requests to review",
     "pendingCampaigns": "Campaigns to review",
-    "queuesTitle": "Review queues",
-    "suspendConfirm": "Suspend {{name}}? Its campaigns will be hidden from the public site immediately."
+    "queuesTitle": "Review queues"
   },
   "console": {
     "adminBadge": "Admin",
@@ -685,5 +686,14 @@
     "backToOverview": "Back to overview",
     "featureBody": "Your organization's current plan does not include this section. Ask the organization owner to change the plan.",
     "adminNavAria": "Admin navigation"
+  },
+  "share": {
+    "title": "Share this campaign",
+    "copyLink": "Copy link",
+    "copied": "Copied",
+    "whatsapp": "WhatsApp",
+    "facebook": "Facebook",
+    "more": "More…",
+    "campaignOnAidNet": "a fundraiser on AidNet"
   }
 }

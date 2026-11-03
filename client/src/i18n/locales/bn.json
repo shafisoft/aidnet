@@ -310,7 +310,8 @@
     "submit": "রিপোর্ট পাঠান",
     "submitting": "পাঠানো হচ্ছে...",
     "successTitle": "ধন্যবাদ!",
-    "successBody": "আপনার রিপোর্ট {{org}}-কে পাঠানো হয়েছে। তারা নিশ্চিত করলে এটি ক্যাম্পেইনে দেখা যাবে।",
+    "successBody": "নিশ্চিতের জন্য আপনার রিপোর্ট {{org}}-এর কাছে পাঠানো হয়েছে। তারা নিশ্চিত করার আগে আপনার {{amount}} {{currency}} ক্যাম্পেইনে “নিশ্চিত হওয়ার অপেক্ষায়” হিসেবে দেখাবে এবং সংগৃহীত মোটের অন্তর্ভুক্ত হবে না।",
+    "awaitingChip": "নিশ্চিত হওয়ার অপেক্ষায়",
     "close": "বন্ধ করুন",
     "noMoneyNote": "এটি আপনার ইতিমধ্যে করা ট্রান্সফারের খবর দেয় — কোনো টাকা সরানো হয় না। দেখুন",
     "confirmedHeading": "নিশ্চিতকৃত অনুদান",
@@ -324,8 +325,7 @@
     "confirm": "নিশ্চিত করুন",
     "reject": "বাতিল করুন",
     "allCampaigns": "সব ক্যাম্পেইন",
-    "filterAria": "ক্যাম্পেইন অনুযায়ী ফিল্টার",
-    "awaitingChip": "নিশ্চিত হওয়ার অপেক্ষায়"
+    "filterAria": "ক্যাম্পেইন অনুযায়ী ফিল্টার"
   },
   "members": {
     "hint": "“Add” সরাসরি সদস্য যোগ করে — তাদের AidNet অ্যাকাউন্ট থাকতে হবে; “Invite” একটি আমন্ত্রণ তৈরি করে, যা গ্রহণ করে তারা যোগ দিতে পারবেন।",
@@ -395,13 +395,13 @@
     "seeAll": "সব দেখুন →",
     "loading": "সংগঠন লোড হচ্ছে...",
     "notFoundTitle": "সংগঠন পাওয়া যায়নি",
+    "loadFailed": "আমরা এই সংগঠনটি লোড করতে পারিনি। পরে আবার চেষ্টা করুন।",
     "noCampaigns": "এখনো কোনো চলমান ক্যাম্পেইন নেই।",
     "created": "AidNet-এ যোগদান: {{date}}",
     "statCampaigns": "চলমান ক্যাম্পেইন",
     "statMoney": "{{amount}} {{currency}}",
     "statRaisedLabel": "এ পর্যন্ত সংগ্রহ",
-    "statGoalLabel": "মোট লক্ষ্য",
-    "loadFailed": "আমরা এই সংগঠনটি লোড করতে পারিনি। পরে আবার চেষ্টা করুন।"
+    "statGoalLabel": "মোট লক্ষ্য"
   },
   "selector": {
     "title": "একটি সংগঠন নির্বাচন করুন",
@@ -480,8 +480,8 @@
   "campaignCard": {
     "view": "ক্যাম্পেইন দেখুন →",
     "raised": "{{amount}} {{currency}} সংগ্রহ হয়েছে",
-    "zakatBadge": "যাকাত",
-    "pendingNote": "+{{amount}} {{currency}} নিশ্চিত হওয়ার অপেক্ষায়"
+    "pendingNote": "+{{amount}} {{currency}} নিশ্চিত হওয়ার অপেক্ষায়",
+    "zakatBadge": "যাকাত"
   },
   "campaignDetail": {
     "back": "← ক্যাম্পেইনে ফিরুন",
@@ -489,6 +489,8 @@
     "zakatEligible": "যাকাতযোগ্য",
     "editCampaign": "ক্যাম্পেইন সম্পাদনা",
     "raisedOfGoal": "{{goal}} {{currency}}-এর {{pct}}%",
+    "confirmedLegend": "নিশ্চিত: {{amount}} {{currency}}",
+    "pendingLegend": "নিশ্চিত হওয়ার অপেক্ষায়: {{amount}} {{currency}}",
     "goal": "লক্ষ্য: {{amount}} {{currency}}",
     "starts": "শুরু: {{date}}",
     "ends": "শেষ: {{date}}",
@@ -503,9 +505,7 @@
     "qrAlt": "অনুদানের কিউআর কোড",
     "address": "যেখানে কাজ হবে",
     "copy": "কপি",
-    "copied": "কপি হয়েছে",
-    "confirmedLegend": "নিশ্চিত: {{amount}} {{currency}}",
-    "pendingLegend": "নিশ্চিত হওয়ার অপেক্ষায়: {{amount}} {{currency}}"
+    "copied": "কপি হয়েছে"
   },
   "campaignNew": {
     "title": "নতুন ক্যাম্পেইন",
@@ -534,7 +534,8 @@
     "createFirst": "আপনার প্রথম ক্যাম্পেইন তৈরি করুন",
     "submitReview": "পর্যালোচনার জন্য জমা দিন",
     "deleteConfirm": "\"{{title}}\" ক্যাম্পেইনটি মুছে ফেলবেন?",
-    "raisedOfGoal": "{{goal}}-এর মধ্যে {{raised}} সংগ্রহ"
+    "raisedOfGoal": "{{goal}}-এর মধ্যে {{raised}} সংগ্রহ",
+    "publish": "প্রকাশ করুন"
   },
   "profile": {
     "organization": "সংগঠন",
@@ -595,6 +596,7 @@
     "loadMore": "আরও দেখুন",
     "activate": "সক্রিয় করুন",
     "suspend": "স্থগিত করুন",
+    "suspendConfirm": "{{name}}-কে স্থগিত করবেন? এর ক্যাম্পেইনগুলো সাথে সাথে পাবলিক সাইট থেকে সরে যাবে।",
     "statusUpdated": "সংগঠনের অবস্থা {{status}} করা হয়েছে।",
     "failedStatusUpdate": "সংগঠনের অবস্থা পরিবর্তন করা যায়নি",
     "headerSlug": "স্লাগ",
@@ -654,8 +656,7 @@
     "beneficiaryNone": "এই ক্যাম্পেইনের জন্য কোনো ব্যক্তি-যাচাইকরণ তথ্য দেওয়া হয়নি।",
     "pendingOrgRequests": "রিভিউ করার সংস্থার আবেদন",
     "pendingCampaigns": "রিভিউ করার ক্যাম্পেইন",
-    "queuesTitle": "রিভিউ কিউ",
-    "suspendConfirm": "{{name}}-কে স্থগিত করবেন? এর ক্যাম্পেইনগুলো সাথে সাথে পাবলিক সাইট থেকে সরে যাবে।"
+    "queuesTitle": "রিভিউ কিউ"
   },
   "console": {
     "adminBadge": "অ্যাডমিন",
@@ -685,5 +686,14 @@
     "backToOverview": "ওভারভিউতে ফিরুন",
     "featureBody": "আপনার সংস্থার বর্তমান প্ল্যানে এই অংশটি নেই। প্ল্যান পরিবর্তনের জন্য সংস্থার মালিকের সঙ্গে যোগাযোগ করুন।",
     "adminNavAria": "অ্যাডমিন নেভিগেশন"
+  },
+  "share": {
+    "title": "এই ক্যাম্পেইনটি শেয়ার করুন",
+    "copyLink": "লিংক কপি করুন",
+    "copied": "কপি হয়েছে",
+    "whatsapp": "WhatsApp",
+    "facebook": "Facebook",
+    "more": "আরও…",
+    "campaignOnAidNet": "AidNet-এ একটি ফান্ডরেইজার"
   }
 }

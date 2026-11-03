@@ -99,6 +99,20 @@ describe('CampaignService', () => {
     expect(sub.data?.status).toBe('pending_review')
   })
 
+  it('publish delegates and unwraps the SETOF row', async () => {
+    const publish = vi
+      .fn()
+      .mockResolvedValue(ok([aCampaign({ status: 'live' })]))
+    const svc = new CampaignService(
+      mockRepository<CampaignRepository>({ publish })
+    )
+
+    const pub = await svc.publish('camp-1')
+
+    expect(publish).toHaveBeenCalledWith('camp-1')
+    expect(pub.data?.status).toBe('live')
+  })
+
   it('tags delegate through', async () => {
     const tags = [aCampaignTag()]
     const getCampaignTags = vi.fn().mockResolvedValue(ok(tags))

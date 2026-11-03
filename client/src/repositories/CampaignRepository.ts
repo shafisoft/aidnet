@@ -143,6 +143,12 @@ export class CampaignRepository extends BaseRepository {
     })
   }
 
+  async publish(campaignId: string): ServiceData<CampaignRow[]> {
+    return this.callRpc<CampaignRow[]>(Rpc.Campaign.Publish, {
+      p_campaign_id: campaignId,
+    })
+  }
+
   async getCampaignTags(): ServiceData<CampaignTag[]> {
     return this.callRpc<CampaignTag[]>(Rpc.CampaignTag.GetMany)
   }

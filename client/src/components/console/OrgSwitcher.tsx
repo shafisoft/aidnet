@@ -116,6 +116,11 @@ function OrgSwitcherContent({
             aria-hidden="true"
           />
           <span className="min-w-0 truncate">{org.name}</span>
+          {org.kind === 'personal' && (
+            <span className="ml-1 flex-none rounded bg-indigo-50 px-1.5 py-0.5 text-xs font-medium text-indigo-700">
+              {t('selector.personalBadge')}
+            </span>
+          )}
         </DropdownMenuItem>
       ))}
       {orgs.length === 0 && (

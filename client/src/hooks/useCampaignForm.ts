@@ -3,6 +3,10 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { campaignService } from '@/services/CampaignService'
+import {
+  PERSONAL_GOAL_CAP,
+  PERSONAL_MAX_DURATION_DAYS,
+} from '@/lib/personalLimits'
 import { useCampaignTags } from '@/hooks/useCampaigns'
 import { useDonationMethods } from '@/hooks/useDonationMethods'
 import type {
@@ -89,11 +93,14 @@ export function useCampaignForm({
   mode,
   campaignId,
   initial,
+  isPersonal = false,
 }: {
   orgId: string
   mode: 'create' | 'edit'
   campaignId?: string
   initial?: Campaign
+  /** Personal-org campaigns get goal/duration caps before publish does. */
+  isPersonal?: boolean
 }) {
   const router = useRouter()
   const { tags, loading: tagsLoading } = useCampaignTags()
@@ -204,10 +211,22 @@ export function useCampaignForm({
       return 'Goal amount must be a number'
     if (form.goalAmount && Number(form.goalAmount) <= 0)
       return 'Goal amount must be greater than zero'
+    if (
+      isPersonal &&
+      form.goalAmount &&
+      Number(form.goalAmount) > PERSONAL_GOAL_CAP
+    )
+      return `Personal campaign goal is capped at ${PERSONAL_GOAL_CAP.toLocaleString()}`
     if (form.startDate && form.endDate) {
       const start = new Date(form.startDate)
       const end = new Date(form.endDate)
       if (end < start) return 'End date must be on or after the start date'
+    }
+    if (isPersonal && form.endDate) {
+      const end = new Date(form.endDate)
+      const cap = new Date()
+      cap.setDate(cap.getDate() + PERSONAL_MAX_DURATION_DAYS)
+      if (end > cap) return 'Personal campaigns can run for at most 90 days'
     }
     return null
   }

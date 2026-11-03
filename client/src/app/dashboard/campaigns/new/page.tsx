@@ -122,7 +122,12 @@ function NewCampaignContent() {
 }
 
 function NewCampaignForm({ orgId }: { orgId: string }) {
-  const controller = useCampaignForm({ orgId, mode: 'create' })
+  const { currentOrg } = useOrganization()
+  const controller = useCampaignForm({
+    orgId,
+    mode: 'create',
+    isPersonal: currentOrg?.kind === 'personal',
+  })
   return <CampaignForm controller={controller} />
 }
 

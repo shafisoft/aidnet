@@ -31,6 +31,9 @@ export interface OrganizationView extends Organization {
 
 export interface OrganizationDetailView extends Organization {
   member_count: number
+  // 'personal' workspaces publish campaigns directly (no review queue);
+  // present on get_organization since the personal-fundraisers migration.
+  kind: OrgKind
   // Combined with org_meta data for display
   name: string
   description: string | null
