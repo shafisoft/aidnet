@@ -19,7 +19,7 @@ export type {
 } from './org'
 export type { Member, MemberView, Membership } from './member'
 export type { Invite, CreateInviteDto } from './invite'
-export type { SystemStats } from './system'
+export type { SystemStats, PersonalCampaign, AbuseReport } from './system'
 export type {
   SubscriptionPlan,
   OrganizationSubscription,

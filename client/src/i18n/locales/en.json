@@ -327,6 +327,25 @@
     "allCampaigns": "All campaigns",
     "filterAria": "Filter by campaign"
   },
+  "campaignReport": {
+    "cta": "Report this campaign",
+    "dialogTitle": "Report this campaign",
+    "intro": "Tell us what is wrong with this fundraiser. Our team reviews every report.",
+    "reason": "What is wrong?",
+    "reasonFraud": "It is fraud — the money will not reach the cause",
+    "reasonMisleading": "It is misleading — the story or details are false",
+    "reasonCompleted": "The fundraiser is already over",
+    "reasonOther": "Something else",
+    "details": "Tell us more",
+    "detailsHint": "Optional — anything that helps us check",
+    "contact": "Your email or phone",
+    "contactHint": "Optional — only if you want a follow-up",
+    "submit": "Send report",
+    "submitting": "Sending…",
+    "successTitle": "Thank you",
+    "successBody": "Your report has reached our review team. We check every report and act on ones that break the rules.",
+    "close": "Close"
+  },
   "members": {
     "hint": "“Add” directly adds a member who already has an account; “Invite” creates an invitation they can accept.",
     "pendingInvites": "Pending Invites ({{count}})",
@@ -656,7 +675,21 @@
     "beneficiaryNone": "No person-beneficiary details were provided for this campaign.",
     "pendingOrgRequests": "Org requests to review",
     "pendingCampaigns": "Campaigns to review",
-    "queuesTitle": "Review queues"
+    "queuesTitle": "Review queues",
+    "personalTitle": "Personal fundraisers",
+    "viewPublic": "View public page",
+    "takeDown": "Take down",
+    "takeDownConfirm": "Take down “{{title}}”? It disappears from every public page immediately.",
+    "takenDownMsg": "Campaign taken down — it is now hidden from the public.",
+    "abuseTitle": "Abuse reports",
+    "abuseReason": {
+      "fraud": "Fraud",
+      "misleading": "Misleading",
+      "completed": "Fundraiser already over",
+      "other": "Other"
+    },
+    "resolve": "Mark resolved",
+    "resolvedMsg": "Report marked as resolved."
   },
   "console": {
     "adminBadge": "Admin",

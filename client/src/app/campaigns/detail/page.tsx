@@ -9,6 +9,7 @@ import { publicCampaignService } from '@/services/PublicCampaignService'
 import { donationReportService } from '@/services/DonationReportService'
 import { MapPin, Copy, Check } from 'lucide-react'
 import { ReportDonationDialog } from '@/components/campaign/ReportDonationDialog'
+import { ReportCampaignDialog } from '@/components/campaign/ReportCampaignDialog'
 import { ShareCampaign } from '@/components/campaign/ShareCampaign'
 import type { PublicCampaign, PublicDonationReport } from '@/types'
 import { usePageTitle } from '@/hooks/usePageTitle'
@@ -74,6 +75,7 @@ function CampaignDetailContent() {
     PublicDonationReport[]
   >([])
   const [showReportDialog, setShowReportDialog] = useState(false)
+  const [showAbuseDialog, setShowAbuseDialog] = useState(false)
 
   usePageTitle(campaign ? campaign.title : t('titles.campaign'))
 
@@ -226,6 +228,15 @@ function CampaignDetailContent() {
             {/* Distribution is the fundraiser's job — offer the share row
                 on every public campaign view. */}
             <ShareCampaign slug={campaign.slug} title={campaign.title} />
+
+            {/* The public's fraud lever — anonymous by design. */}
+            <button
+              type="button"
+              onClick={() => setShowAbuseDialog(true)}
+              className="text-xs text-gray-400 hover:text-gray-600"
+            >
+              {t('campaignReport.cta')}
+            </button>
 
             {campaign.description && (
               <p className="whitespace-pre-line leading-relaxed text-gray-700">
@@ -380,6 +391,12 @@ function CampaignDetailContent() {
           orgName={campaign.org_name}
           currency={campaign.currency ?? undefined}
           onClose={() => setShowReportDialog(false)}
+        />
+      )}
+      {showAbuseDialog && campaign && (
+        <ReportCampaignDialog
+          campaignId={campaign.id}
+          onClose={() => setShowAbuseDialog(false)}
         />
       )}
     </AppLayout>

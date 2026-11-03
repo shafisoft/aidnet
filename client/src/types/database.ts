@@ -78,6 +78,68 @@ export type Database = {
           },
         ]
       }
+      campaign_abuse_reports: {
+        Row: {
+          campaign_id: string
+          contact: string | null
+          created_at: string
+          details: string | null
+          id: string
+          reason: string
+          reporter_id: string | null
+          reporter_ip_hash: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+        }
+        ComputedFields: never
+        Insert: {
+          campaign_id: string
+          contact?: string | null
+          created_at?: string
+          details?: string | null
+          id?: string
+          reason: string
+          reporter_id?: string | null
+          reporter_ip_hash?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+        }
+        Update: {
+          campaign_id?: string
+          contact?: string | null
+          created_at?: string
+          details?: string | null
+          id?: string
+          reason?: string
+          reporter_id?: string | null
+          reporter_ip_hash?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'campaign_abuse_reports_campaign_id_fkey'
+            columns: ['campaign_id']
+            isOneToOne: false
+            referencedRelation: 'campaigns'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'campaign_abuse_reports_reporter_id_fkey'
+            columns: ['reporter_id']
+            isOneToOne: false
+            referencedRelation: 'profile_view'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'campaign_abuse_reports_resolved_by_fkey'
+            columns: ['resolved_by']
+            isOneToOne: false
+            referencedRelation: 'profile_view'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       campaign_beneficiary: {
         Row: {
           campaign_id: string
@@ -2002,6 +2064,20 @@ export type Database = {
           isSetofReturn: true
         }
       }
+      get_personal_campaigns: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          created_at: string
+          currency: string
+          goal_amount: number
+          id: string
+          org_id: string
+          org_name: string
+          slug: string
+          status: string
+          title: string
+        }[]
+      }
       get_public_campaign_by_slug: {
         Args: { p_slug: string }
         Returns: {
@@ -2019,6 +2095,7 @@ export type Database = {
           org_logo_url: string
           org_name: string
           org_slug: string
+          pending_amount: number
           raised_amount: number
           slug: string
           start_date: string
@@ -2048,6 +2125,7 @@ export type Database = {
           org_logo_url: string
           org_name: string
           org_slug: string
+          pending_amount: number
           raised_amount: number
           slug: string
           start_date: string
@@ -2193,6 +2271,20 @@ export type Database = {
         Returns: boolean
       }
       is_system_admin: { Args: Record<PropertyKey, never>; Returns: boolean }
+      list_campaign_abuse_reports: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          campaign_id: string
+          campaign_slug: string
+          campaign_title: string
+          contact: string
+          created_at: string
+          details: string
+          id: string
+          reason: string
+          resolved_at: string
+        }[]
+      }
       list_donation_reports: {
         Args: { p_campaign_id: string; p_status?: string }
         Returns: {
@@ -2315,6 +2407,30 @@ export type Database = {
       remove_organization_member: {
         Args: { target_org_id: string; target_user_id: string }
         Returns: boolean
+      }
+      report_campaign:
+        | {
+            Args: {
+              p_campaign_id: string
+              p_contact?: string
+              p_details?: string
+              p_reason: string
+            }
+            Returns: string
+          }
+        | {
+            Args: {
+              p_campaign_id: string
+              p_contact?: string
+              p_details?: string
+              p_reason: string
+              p_turnstile_token?: string
+            }
+            Returns: string
+          }
+      resolve_campaign_abuse_report: {
+        Args: { p_report_id: string }
+        Returns: string
       }
       revoke_invite: { Args: { p_invite_id: string }; Returns: boolean }
       revoke_system_admin: {

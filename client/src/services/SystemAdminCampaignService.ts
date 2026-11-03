@@ -1,4 +1,9 @@
-import type { Campaign, ServiceData } from '@/types'
+import type {
+  AbuseReport,
+  Campaign,
+  PersonalCampaign,
+  ServiceData,
+} from '@/types'
 import { SystemAdminCampaignRepository } from '@/repositories/SystemAdminCampaignRepository'
 
 export class SystemAdminCampaignService {
@@ -8,6 +13,18 @@ export class SystemAdminCampaignService {
 
   async getPendingCampaigns(): ServiceData<Campaign[]> {
     return this.systemAdminCampaignRepo.getPendingCampaigns()
+  }
+
+  async getPersonalCampaigns(): ServiceData<PersonalCampaign[]> {
+    return this.systemAdminCampaignRepo.getPersonalCampaigns()
+  }
+
+  async listAbuseReports(): ServiceData<AbuseReport[]> {
+    return this.systemAdminCampaignRepo.listAbuseReports()
+  }
+
+  async resolveAbuseReport(reportId: string): ServiceData<string> {
+    return this.systemAdminCampaignRepo.resolveAbuseReport(reportId)
   }
 
   async verifyCampaign(

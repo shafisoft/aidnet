@@ -16,8 +16,17 @@ function AdminCampaignsContent() {
   const { isSystemAdmin, loading: adminLoading } = useSystemAdmin()
   const searchParams = useSearchParams()
   const slug = searchParams.get('slug')
-  const { pending, loading, actionLoading, error, verify, reject } =
-    useCampaignAdmin()
+  const {
+    pending,
+    personal,
+    abuseReports,
+    loading,
+    actionLoading,
+    error,
+    verify,
+    reject,
+    resolveAbuseReport,
+  } = useCampaignAdmin()
   const [notes, setNotes] = useState('')
   const [feedback, setFeedback] = useState<string | null>(null)
 
@@ -71,6 +80,25 @@ function AdminCampaignsContent() {
     setNotes('')
   }
 
+  // Personal campaigns skip the review queue, so this is the only
+  // oversight moment: reject hides them from every public read.
+  const handleTakeDown = async (title: string, id: string) => {
+    if (!window.confirm(t('admin.takeDownConfirm', { title }))) return
+    setFeedback(null)
+    const { error: err } = await reject(id)
+    setFeedback(
+      err ? t('admin.errorPrefix', { message: err }) : t('admin.takenDownMsg')
+    )
+  }
+
+  const handleResolveReport = async (id: string) => {
+    setFeedback(null)
+    const { error: err } = await resolveAbuseReport(id)
+    setFeedback(
+      err ? t('admin.errorPrefix', { message: err }) : t('admin.resolvedMsg')
+    )
+  }
+
   return (
     <ConsoleShell variant="admin">
       <div className="mx-auto max-w-5xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
@@ -116,6 +144,98 @@ function AdminCampaignsContent() {
               ))
             )}
           </div>
+        )}
+
+        {/* Post-publish oversight: personal campaigns skip the review
+            queue, so they surface here once live. */}
+        {!loading && !selected && personal.length > 0 && (
+          <section className="space-y-3">
+            <h2 className="text-lg font-semibold text-gray-900">
+              {t('admin.personalTitle')}
+            </h2>
+            {personal.map(c => (
+              <div
+                key={c.id}
+                className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-white p-4 shadow"
+              >
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="font-medium text-gray-900">{c.title}</span>
+                    <StatusChip status={c.status} />
+                  </div>
+                  <p className="text-sm text-gray-500">
+                    /{c.slug} · {c.org_name}
+                  </p>
+                </div>
+                <div className="flex flex-none items-center gap-3">
+                  <Link
+                    href={`/campaigns/detail/?slug=${encodeURIComponent(c.slug)}`}
+                    className="text-sm text-indigo-600 hover:underline"
+                  >
+                    {t('admin.viewPublic')}
+                  </Link>
+                  {c.status !== 'rejected' && c.status !== 'closed' && (
+                    <button
+                      type="button"
+                      disabled={actionLoading}
+                      onClick={() => handleTakeDown(c.title, c.id)}
+                      className="rounded-md border border-red-300 px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-50 disabled:opacity-50"
+                    >
+                      {t('admin.takeDown')}
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+          </section>
+        )}
+
+        {/* The public's fraud flags — resolve after reviewing the campaign. */}
+        {!loading && !selected && abuseReports.length > 0 && (
+          <section className="space-y-3">
+            <h2 className="text-lg font-semibold text-gray-900">
+              {t('admin.abuseTitle')}
+            </h2>
+            {abuseReports.map(r => (
+              <div
+                key={r.id}
+                className={`flex flex-wrap items-start justify-between gap-3 rounded-lg p-4 shadow ${r.resolved_at ? 'bg-gray-50 opacity-70' : 'bg-white'}`}
+              >
+                <div className="min-w-0 space-y-1">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="rounded-full bg-red-50 px-2 py-0.5 text-xs font-medium text-red-700">
+                      {t(`admin.abuseReason.${r.reason}`)}
+                    </span>
+                    <Link
+                      href={`/campaigns/detail/?slug=${encodeURIComponent(r.campaign_slug)}`}
+                      className="font-medium text-indigo-600 hover:underline"
+                    >
+                      {r.campaign_title}
+                    </Link>
+                  </div>
+                  {r.details && (
+                    <p className="whitespace-pre-line text-sm text-gray-600">
+                      {r.details}
+                    </p>
+                  )}
+                  <p className="text-xs text-gray-400">
+                    {new Date(r.created_at).toLocaleString()}
+                    {r.contact ? ` · ${r.contact}` : ''}
+                  </p>
+                </div>
+                {!r.resolved_at && (
+                  <button
+                    type="button"
+                    disabled={actionLoading}
+                    onClick={() => handleResolveReport(r.id)}
+                    className="flex-none rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
+                  >
+                    {t('admin.resolve')}
+                  </button>
+                )}
+              </div>
+            ))}
+          </section>
         )}
 
         {selected && (
@@ -188,6 +308,24 @@ function AdminCampaignsContent() {
         )}
       </div>
     </ConsoleShell>
+  )
+}
+
+function StatusChip({ status }: { status: string }) {
+  const { t } = useTranslation()
+  const map: Record<string, string> = {
+    draft: 'bg-gray-100 text-gray-600',
+    pending_review: 'bg-amber-100 text-amber-700',
+    live: 'bg-green-100 text-green-700',
+    rejected: 'bg-red-100 text-red-700',
+    closed: 'bg-gray-100 text-gray-600',
+  }
+  return (
+    <span
+      className={`rounded-full px-2 py-0.5 text-xs font-medium ${map[status] ?? map.draft}`}
+    >
+      {t(`status.${status}`, { defaultValue: status })}
+    </span>
   )
 }
 

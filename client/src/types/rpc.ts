@@ -90,6 +90,7 @@ export const Rpc = {
   Public: {
     GetOrgBySlug: 'get_public_org_by_slug' satisfies DbFunction,
     GetMany: 'get_public_orgs' satisfies DbFunction,
+    ReportCampaign: 'report_campaign' satisfies DbFunction,
   },
   Campaign: {
     Create: 'create_campaign' satisfies DbFunction,
@@ -110,6 +111,9 @@ export const Rpc = {
     Verify: 'verify_campaign' satisfies DbFunction,
     Reject: 'reject_campaign' satisfies DbFunction,
     GetPending: 'get_pending_campaigns' satisfies DbFunction,
+    GetPersonal: 'get_personal_campaigns' satisfies DbFunction,
+    ListAbuseReports: 'list_campaign_abuse_reports' satisfies DbFunction,
+    ResolveAbuseReport: 'resolve_campaign_abuse_report' satisfies DbFunction,
   },
   DonationMethod: {
     GetMany: 'get_donation_methods' satisfies DbFunction,
