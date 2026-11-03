@@ -58,3 +58,7 @@ client/test-results
 
 # direnv per-project env (account-specific, not secret-bearing but not shared)
 .envrc
+
+# ZCode session artifacts
+.zcode/
+test-results/
