@@ -81,7 +81,7 @@ function OverviewContent() {
             onClick={() => void reloadStats()}
             className="mt-2 rounded-md border border-destructive/40 bg-card px-3 py-1.5 text-sm font-medium text-destructive hover:bg-destructive/10"
           >
-            {t('common.tryAgain')}
+            {t('errors.tryAgain')}
           </button>
         </div>
       )}

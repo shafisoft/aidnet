@@ -85,7 +85,11 @@ function OrgCampaignsPanel({
           </div>
         )}
 
-        {error && <div className="py-6 text-center text-red-600">{error}</div>}
+        {error && (
+          <div className="py-6 text-center text-red-600" role="alert">
+            {t('campaigns.error')}
+          </div>
+        )}
 
         {!loading && !error && campaigns.length === 0 && (
           <p className="text-gray-500">{t('orgPublic.noCampaigns')}</p>
@@ -138,7 +142,7 @@ function PublicOrgContent({ slug }: { slug: string }) {
             <h1 className="text-2xl font-bold text-gray-900">
               {t('orgPublic.notFoundTitle')}
             </h1>
-            <p className="text-gray-600">{error}</p>
+            <p className="text-gray-600">{t('orgPublic.loadFailed')}</p>
             <Link href="/" className="text-indigo-600 hover:underline">
               {t('common.goHome')}
             </Link>
@@ -205,7 +209,7 @@ function OrgDirectory() {
 
         {error && (
           <div className="py-12 text-center" role="alert">
-            <div className="text-red-600">{error}</div>
+            <div className="text-red-600">{t('orgDirectory.loadFailed')}</div>
           </div>
         )}
 

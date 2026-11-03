@@ -101,7 +101,7 @@ function OrgSwitcherContent({
   currentOrgId,
   onSelect,
 }: {
-  orgs: { id: string; name: string }[]
+  orgs: { id: string; name: string; kind?: string }[]
   currentOrgId: string | null
   onSelect: (orgId: string) => void
 }) {
@@ -125,7 +125,9 @@ function OrgSwitcherContent({
       )}
       <DropdownMenuSeparator />
       <DropdownMenuItem asChild>
-        <Link href="/orgs">
+        {/* Authed console users pick an org on /manage/orgs; the public
+            directory (/orgs) is a read-only dead end from here. */}
+        <Link href="/manage/orgs">
           <Building2 className="h-4 w-4" aria-hidden="true" />
           {t('nav.browseOrgs')}
         </Link>

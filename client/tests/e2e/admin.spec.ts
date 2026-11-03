@@ -215,6 +215,8 @@ test.describe.serial('Admin Pages - Org Request Workflow', () => {
 
     // Suspend and reactivate via the proper org-management page (/admin/orgs)
     await gotoStable(page, '/admin/orgs')
+    // Suspending asks for confirmation: accept the native dialog.
+    page.on('dialog', dialog => void dialog.accept())
     const orgRow = page.locator(`tr:has(td:has-text("${orgName}"))`)
     const suspendButton = orgRow.getByRole('button', { name: 'Suspend' })
     await expect(suspendButton).toBeVisible()

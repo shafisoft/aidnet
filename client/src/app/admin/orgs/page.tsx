@@ -162,12 +162,22 @@ export default function AdminOrgsPage() {
                       </td>
                       <td className="whitespace-nowrap px-6 py-4">
                         <button
-                          onClick={() =>
-                            handleSetStatus(
+                          onClick={() => {
+                            // Suspending hides the org's public campaigns
+                            // immediately — worth one confirmation. Reactivating
+                            // is recovery, so it stays one click.
+                            if (
+                              !isSuspended &&
+                              !window.confirm(
+                                t('admin.suspendConfirm', { name: org.name })
+                              )
+                            )
+                              return
+                            void handleSetStatus(
                               org.id,
                               isSuspended ? 'active' : 'suspended'
                             )
-                          }
+                          }}
                           disabled={actionLoading}
                           className={`rounded-md px-3 py-2 text-xs font-medium text-white ${
                             isSuspended

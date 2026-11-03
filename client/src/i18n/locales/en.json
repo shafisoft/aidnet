@@ -387,7 +387,8 @@
     "title": "Organizations on AidNet",
     "subtitle": "Discover verified organizations raising funds for causes that matter.",
     "empty": "No organizations to show yet.",
-    "viewOrg": "View organization →"
+    "viewOrg": "View organization →",
+    "loadFailed": "We couldn't load organizations right now. Please try again."
   },
   "orgPublic": {
     "campaignsBy": "Campaigns by {{name}}",
@@ -399,7 +400,8 @@
     "statCampaigns": "Live campaigns",
     "statMoney": "{{amount}} {{currency}}",
     "statRaisedLabel": "Raised so far",
-    "statGoalLabel": "Combined goal"
+    "statGoalLabel": "Combined goal",
+    "loadFailed": "We couldn't load this organization. Please try again later."
   },
   "selector": {
     "title": "Select an Organization",
@@ -652,7 +654,8 @@
     "beneficiaryNone": "No person-beneficiary details were provided for this campaign.",
     "pendingOrgRequests": "Org requests to review",
     "pendingCampaigns": "Campaigns to review",
-    "queuesTitle": "Review queues"
+    "queuesTitle": "Review queues",
+    "suspendConfirm": "Suspend {{name}}? Its campaigns will be hidden from the public site immediately."
   },
   "console": {
     "adminBadge": "Admin",
