@@ -38,14 +38,19 @@ changing anything. Canonical companions:
   migration.
 - **One repository per entity** in `client/src/repositories/`, extending
   `BaseRepository`. Every `callRpc` lives there. Services NEVER call `callRpc`.
-- **Schema layout (multi-product)**: product objects (tables, views, RPC
-  functions) live in the `donate` schema — that is the only API surface
-  (`PGRST_DB_SCHEMAS=donate` in the platform repo's `../platform/docker/.env`).
-  The platform data layer lives
+- **Schema layout (multi-product)**: the exposed `donate` schema holds
+  FUNCTIONS only (the Data API surface; `PGRST_DB_SCHEMAS=donate` in the
+  platform repo's `../platform/docker/.env`). Tables, views and the RLS
+  helper functions live in `donate_private` — same posture as every other
+  co-living product. Donate runs a SECURITY INVOKER CRUD surface (29 of its
+  95 functions), so `donate_private` keeps client table grants + RLS
+  policies (the recorded zikr-style exception; schema USAGE granted, the
+  legacy `private` schema was merged in and dropped at the 2026-11-04
+  platform cutover). The platform data layer lives
   in `shared` (`shared.profiles`, auth onboarding trigger) and is NOT exposed;
   it is reachable only through SECURITY DEFINER product functions. `public` is
-  retired. A future product ships its own schema + its own migration stream;
-  every function pins `SET search_path = donate, shared, extensions` (its own
+  retired. Every function pins
+  `SET search_path = donate, donate_private, shared, extensions` (exposed
   schema first), and service roles carry the same chain at role level. The
   platform layer itself is a sibling repo (`../platform/`) — onboarding
   guidelines for new products, the schema/exposure registry, and its own

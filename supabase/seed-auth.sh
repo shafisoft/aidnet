@@ -49,7 +49,7 @@ fi
 COMPOSE="docker compose -f $PLATFORM_DOCKER/docker-compose.yml --env-file $PLATFORM_DOCKER/.env"
 # Product schema chain (donate strategy) — psql sessions here are the table
 # owner (RLS bypass), but unqualified table refs still need the chain.
-PGOPTIONS_SQL="-c search_path=donate,shared,extensions"
+PGOPTIONS_SQL="-c search_path=donate,donate_private,shared,extensions"
 if [ -n "${DB_CONTAINER:-}" ]; then
   psql() { docker exec -i -e PGOPTIONS="$PGOPTIONS_SQL" "$DB_CONTAINER" psql -U postgres -d postgres -v ON_ERROR_STOP=1 "$@"; }
 elif [ -n "$($COMPOSE ps -q db 2>/dev/null || true)" ]; then

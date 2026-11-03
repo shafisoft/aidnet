@@ -84,7 +84,7 @@ for f in $FILES; do
   # the donate schema); `public` trails it because that's where the pgTAP
   # extension lives. The SET is piped ahead of the suite file: `-c` would
   # make psql exit before reading stdin.
-  OUT="$({ echo "SET search_path = donate, shared, extensions, private, public;"
+  OUT="$({ echo "SET search_path = donate, donate_private, shared, extensions, public;"
     cat "$f"; } | psql_db -A -t -q -v ON_ERROR_STOP=1 2>&1)"
   PSQL_RC=$?
 

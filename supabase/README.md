@@ -257,8 +257,10 @@ Accepted linter findings (do **not** "fix" these):
   be `SECURITY DEFINER` (an INVOKER function reads nothing), and each one
   enforces its own authorization gate. Revoking `authenticated` would break
   the app; this finding is noise for a function-first schema.
-- Every function pins `SET search_path = donate, shared, extensions, private`
-  (lint 0011); the pgTAP suite `11_execute_grant_surface.sql` is the
+- Every function pins `SET search_path = donate, donate_private, shared,
+  extensions` (lint 0011; chain updated at the 2026-11-04 platform cutover —
+  tables moved to `donate_private`, legacy `private` merged in and dropped);
+  the pgTAP suite `11_execute_grant_surface.sql` is the
   privilege-level tripwire for all of the above.
 
 ## Development Workflow
