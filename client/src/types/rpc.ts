@@ -101,6 +101,8 @@ export const Rpc = {
     Delete: 'delete_campaign' satisfies DbFunction,
     Submit: 'submit_campaign_for_review' satisfies DbFunction,
     Publish: 'publish_campaign' satisfies DbFunction,
+    Unpublish: 'unpublish_campaign' satisfies DbFunction,
+    Close: 'close_campaign' satisfies DbFunction,
     GetTagIds: 'get_campaign_tag_ids' satisfies DbFunction,
     SetBeneficiary: 'set_campaign_beneficiary' satisfies DbFunction,
     GetBeneficiary: 'get_campaign_beneficiary' satisfies DbFunction,

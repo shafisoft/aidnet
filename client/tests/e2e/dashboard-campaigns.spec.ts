@@ -24,6 +24,42 @@ function tagChip(page: import('@playwright/test').Page, label: string) {
   return page.getByRole('button', { name: label, exact: true })
 }
 
+/**
+ * Force a seeded demo-org campaign back to live via the admin-only
+ * update_campaign status path. The unpublish/close tests below mutate seed
+ * rows, and every browser project re-runs this file against the same
+ * database — restoring live state keeps the tests order- and
+ * project-independent (same reason the tag test restores its selection).
+ */
+async function restoreLiveCampaign(
+  request: import('@playwright/test').APIRequestContext,
+  slug: string
+) {
+  const session = await signIn(
+    request,
+    USERS.systemAdmin.email,
+    USERS.systemAdmin.password
+  )
+  const orgs = await rpc<Array<{ id: string; slug: string }>>(
+    request,
+    session,
+    'get_all_organizations'
+  )
+  const org = orgs.find(o => o.slug === 'demo-org')
+  expect(org, 'seeded demo-org').toBeTruthy()
+  const campaigns = await rpc<
+    Array<{ id: string; title: string; slug: string }>
+  >(request, session, 'get_campaigns', { p_org_id: org!.id })
+  const campaign = campaigns.find(c => c.slug === slug)
+  if (!campaign) return
+  await rpc(request, session, 'update_campaign', {
+    p_campaign_id: campaign.id,
+    p_title: campaign.title,
+    p_slug: campaign.slug,
+    p_status: 'live',
+  })
+}
+
 test.describe('Dashboard Campaigns', () => {
   test('When owner loads /dashboard/campaigns, list and New Campaign link show', async ({
     page,
@@ -267,5 +303,61 @@ test.describe('Dashboard Campaigns', () => {
       'aria-pressed',
       'true'
     )
+  })
+
+  // demo-campaign-13/14 are the least-referenced seeded live campaigns —
+  // only donation-report.spec.ts pins a slug (demo-campaign-1). Both tests
+  // restore live state on exit so later browser projects see seed-fresh rows.
+  test('When owner unpublishes a live campaign, it returns to Draft and stays after reload', async ({
+    page,
+    request,
+  }) => {
+    await restoreLiveCampaign(request, 'demo-campaign-14')
+    await gotoStable(page, '/dashboard/campaigns')
+    const row = page
+      .locator('.divide-y > div')
+      .filter({ hasText: 'demo-campaign-14' })
+    await expect(row.getByText('Live', { exact: true })).toBeVisible()
+
+    await row.getByRole('button', { name: 'Unpublish' }).click()
+    await expect(row.getByText('Draft', { exact: true })).toBeVisible()
+    await expect(row.getByRole('button', { name: 'Unpublish' })).toHaveCount(0)
+
+    // Persistence: the status is a DB write, not local row state.
+    await gotoStable(page, '/dashboard/campaigns')
+    await expect(
+      page
+        .locator('.divide-y > div')
+        .filter({ hasText: 'demo-campaign-14' })
+        .getByText('Draft', { exact: true })
+    ).toBeVisible()
+
+    await restoreLiveCampaign(request, 'demo-campaign-14')
+  })
+
+  test('When owner cancels a live campaign, it closes and the decision persists', async ({
+    page,
+    request,
+  }) => {
+    await restoreLiveCampaign(request, 'demo-campaign-13')
+    await gotoStable(page, '/dashboard/campaigns')
+    const row = page
+      .locator('.divide-y > div')
+      .filter({ hasText: 'demo-campaign-13' })
+    await expect(row.getByText('Live', { exact: true })).toBeVisible()
+
+    page.once('dialog', dialog => dialog.accept())
+    await row.getByRole('button', { name: 'Cancel Campaign' }).click()
+    await expect(row.getByText('Closed', { exact: true })).toBeVisible()
+
+    await gotoStable(page, '/dashboard/campaigns')
+    await expect(
+      page
+        .locator('.divide-y > div')
+        .filter({ hasText: 'demo-campaign-13' })
+        .getByText('Closed', { exact: true })
+    ).toBeVisible()
+
+    await restoreLiveCampaign(request, 'demo-campaign-13')
   })
 })

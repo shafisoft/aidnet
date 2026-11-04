@@ -66,6 +66,28 @@ export function useCampaigns(orgId: string | null | undefined) {
     [load]
   )
 
+  const unpublish = useCallback(
+    async (campaignId: string) => {
+      // live → draft: leaves public view instantly, editable again.
+      const { error: err } = await campaignService.unpublish(campaignId)
+      if (err) return { error: err }
+      await load()
+      return { error: null }
+    },
+    [load]
+  )
+
+  const close = useCallback(
+    async (campaignId: string) => {
+      // live → closed: terminal cancel.
+      const { error: err } = await campaignService.close(campaignId)
+      if (err) return { error: err }
+      await load()
+      return { error: null }
+    },
+    [load]
+  )
+
   const remove = useCallback(
     async (campaignId: string) => {
       const { error: err } = await campaignService.deleteCampaign(campaignId)
@@ -92,6 +114,8 @@ export function useCampaigns(orgId: string | null | undefined) {
     refetch: load,
     submit,
     publish,
+    unpublish,
+    close,
     remove,
     setTags,
   }

@@ -113,6 +113,21 @@ export class CampaignService {
     return { data: data?.[0] ?? null, error: null }
   }
 
+  async unpublish(campaignId: string): ServiceData<CampaignRow> {
+    // unpublish_campaign: live → draft, the org's exit from 'live' without
+    // admin help. Same SETOF shape as publish; unwrap.
+    const { data, error } = await this.campaignRepo.unpublish(campaignId)
+    if (error) return { data: null, error }
+    return { data: data?.[0] ?? null, error: null }
+  }
+
+  async close(campaignId: string): ServiceData<CampaignRow> {
+    // close_campaign: live → closed, terminal cancel. Same SETOF shape.
+    const { data, error } = await this.campaignRepo.close(campaignId)
+    if (error) return { data: null, error }
+    return { data: data?.[0] ?? null, error: null }
+  }
+
   async getCampaignTags(): ServiceData<CampaignTag[]> {
     return this.campaignRepo.getCampaignTags()
   }

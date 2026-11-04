@@ -17,9 +17,16 @@ function DashboardCampaignsContent() {
   const { t } = useTranslation()
   const { currentOrg } = useOrganization()
   const { hasPermission } = usePermissions()
-  const { campaigns, loading, error, submit, publish, remove } = useCampaigns(
-    currentOrg?.id
-  )
+  const {
+    campaigns,
+    loading,
+    error,
+    submit,
+    publish,
+    unpublish,
+    close,
+    remove,
+  } = useCampaigns(currentOrg?.id)
   // Personal orgs self-publish (publish_campaign, caps in the DB);
   // organizations keep the system-admin review queue.
   const isPersonal = currentOrg?.kind === 'personal'
@@ -70,8 +77,11 @@ function DashboardCampaignsContent() {
               key={c.id}
               campaign={c}
               canDelete={hasPermission('campaigns:delete')}
+              canUpdate={hasPermission('campaigns:update')}
               isPersonal={isPersonal}
               onPipelineAction={() => pipelineAction(c.id)}
+              onUnpublish={() => unpublish(c.id)}
+              onClose={() => close(c.id)}
               onRemove={() => remove(c.id)}
             />
           ))}
@@ -84,14 +94,20 @@ function DashboardCampaignsContent() {
 function CampaignRow({
   campaign,
   canDelete,
+  canUpdate,
   isPersonal,
   onPipelineAction,
+  onUnpublish,
+  onClose,
   onRemove,
 }: {
   campaign: ReturnType<typeof useCampaigns>['campaigns'][number]
   canDelete: boolean
+  canUpdate: boolean
   isPersonal: boolean
   onPipelineAction: () => void
+  onUnpublish: () => void
+  onClose: () => void
   onRemove: () => void
 }) {
   const { t } = useTranslation()
@@ -152,12 +168,41 @@ function CampaignRow({
               : t('dashboardCampaigns.submitReview')}
           </button>
         ) : null}
-        <Link
-          href={`/dashboard/campaigns/edit?id=${c.id}`}
-          className="inline-flex min-h-11 items-center rounded-md border px-4 py-2.5 text-sm font-medium hover:border-primary/40"
-        >
-          {t('common.edit')}
-        </Link>
+        {canUpdate && c.status === 'live' && (
+          <>
+            <button
+              type="button"
+              onClick={onUnpublish}
+              className="min-h-11 rounded-md border px-4 py-2.5 text-sm font-medium hover:border-primary/40"
+            >
+              {t('dashboardCampaigns.unpublish')}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                if (
+                  confirm(
+                    t('dashboardCampaigns.closeConfirm', { title: c.title })
+                  )
+                )
+                  onClose()
+              }}
+              className="min-h-11 rounded-md border border-destructive/40 px-4 py-2.5 text-sm font-medium text-destructive hover:bg-destructive/10"
+            >
+              {t('dashboardCampaigns.close')}
+            </button>
+          </>
+        )}
+        {/* update_campaign rejects member edits of live/rejected campaigns —
+            don't offer an Edit that can only error. */}
+        {c.status !== 'live' && c.status !== 'rejected' && (
+          <Link
+            href={`/dashboard/campaigns/edit?id=${c.id}`}
+            className="inline-flex min-h-11 items-center rounded-md border px-4 py-2.5 text-sm font-medium hover:border-primary/40"
+          >
+            {t('common.edit')}
+          </Link>
+        )}
         {canDelete && c.status !== 'live' && (
           <button
             type="button"
