@@ -29,8 +29,15 @@ test.describe('System Admin - Plan Management', () => {
       await expect(
         page.locator('h2').filter({ hasText: 'Create Plan' })
       ).toBeVisible()
+      // Name + description; features are pick-list chips, not free text.
       const inputs = page.getByRole('textbox')
-      expect(await inputs.count()).toBeGreaterThanOrEqual(3)
+      expect(await inputs.count()).toBeGreaterThanOrEqual(2)
+      await expect(
+        page.getByRole('button', { name: 'Members', exact: true })
+      ).toBeVisible()
+      await expect(
+        page.getByRole('button', { name: 'Donations', exact: true })
+      ).toBeVisible()
     })
 
     test('When admin cancels Create Plan, form closes', async ({ page }) => {
@@ -104,6 +111,38 @@ test.describe('System Admin - Plan Management', () => {
       await nameInput.fill(planName)
       await page.getByRole('button', { name: 'Create', exact: true }).click()
       await expect(page.getByText(planName)).toBeVisible()
+    })
+
+    test('When admin selects feature chips and creates a plan, the selected features appear on the plan', async ({
+      page,
+    }) => {
+      const plans = new AdminPlansPage(page)
+      await plans.open()
+
+      await page.getByRole('button', { name: 'Create Plan' }).click()
+      const panel = page.locator('.bg-white.p-6.rounded-lg.shadow')
+      const planName = `E2E Chip Plan ${Date.now()}`
+      await panel.locator('input[type="text"]').first().fill(planName)
+
+      const membersChip = panel.getByRole('button', {
+        name: 'Members',
+        exact: true,
+      })
+      const donationsChip = panel.getByRole('button', {
+        name: 'Donations',
+        exact: true,
+      })
+      await expect(membersChip).toHaveAttribute('aria-pressed', 'false')
+      await membersChip.click()
+      await donationsChip.click()
+      await expect(membersChip).toHaveAttribute('aria-pressed', 'true')
+      await expect(donationsChip).toHaveAttribute('aria-pressed', 'true')
+
+      await panel.getByRole('button', { name: 'Create', exact: true }).click()
+      const row = page.locator('table tbody tr').filter({ hasText: planName })
+      await expect(row).toBeVisible()
+      await expect(row.getByText('Members')).toBeVisible()
+      await expect(row.getByText('Donations')).toBeVisible()
     })
 
     test('When admin opens /admin/campaigns, review queue loads', async ({

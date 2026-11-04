@@ -5,11 +5,20 @@ import { systemAdminSubscriptionService } from '@/services/SystemAdminSubscripti
 import { orgSubscriptionService } from '@/services/OrgSubscriptionService'
 import { useSystemAdmin } from '@/hooks/useSystemAdmin'
 import { normalizeFeatures } from '@/lib/normalizeFeatures'
+import { PLAN_FEATURES } from '@/lib/planFeatures'
 import { usePageTitle } from '@/hooks/usePageTitle'
 import { useTranslation } from 'react-i18next'
 import { useState, useEffect, useCallback } from 'react'
 import type { SubscriptionPlan } from '@/types'
 import Link from 'next/link'
+
+const emptyForm = {
+  name: '',
+  description: '',
+  price_monthly: 0,
+  price_yearly: 0,
+  features: [] as string[],
+}
 
 export default function AdminPlansPage() {
   const { t } = useTranslation()
@@ -18,14 +27,24 @@ export default function AdminPlansPage() {
   const [loading, setLoading] = useState(true)
   const [showCreate, setShowCreate] = useState(false)
   const [editingPlan, setEditingPlan] = useState<SubscriptionPlan | null>(null)
-  const [form, setForm] = useState({
-    name: '',
-    description: '',
-    price_monthly: 0,
-    price_yearly: 0,
-    features: '',
-  })
+  const [form, setForm] = useState(emptyForm)
   const [saving, setSaving] = useState(false)
+
+  // The picker offers the known enforcement keys plus any legacy keys the
+  // edited plan already carries (deselectable, so they can be removed).
+  const featureChoices: string[] = [
+    ...PLAN_FEATURES,
+    ...form.features.filter(f => !PLAN_FEATURES.includes(f as never)),
+  ]
+
+  const toggleFeature = (key: string) => {
+    setForm(prev => ({
+      ...prev,
+      features: prev.features.includes(key)
+        ? prev.features.filter(f => f !== key)
+        : [...prev.features, key],
+    }))
+  }
 
   usePageTitle(t('admin.plansLink'))
 
@@ -48,26 +67,16 @@ export default function AdminPlansPage() {
 
   const handleCreate = async () => {
     setSaving(true)
-    const features = form.features
-      .split(',')
-      .map(f => f.trim())
-      .filter(Boolean)
     const { error } = await systemAdminSubscriptionService.createPlan(
       form.name,
       form.description,
       form.price_monthly,
       form.price_yearly,
-      features
+      form.features
     )
     if (!error) {
       setShowCreate(false)
-      setForm({
-        name: '',
-        description: '',
-        price_monthly: 0,
-        price_yearly: 0,
-        features: '',
-      })
+      setForm(emptyForm)
       loadPlans()
     }
     setSaving(false)
@@ -76,10 +85,6 @@ export default function AdminPlansPage() {
   const handleUpdate = async () => {
     if (!editingPlan) return
     setSaving(true)
-    const features = form.features
-      .split(',')
-      .map(f => f.trim())
-      .filter(Boolean)
     const { error } = await systemAdminSubscriptionService.updatePlan(
       editingPlan.id,
       {
@@ -87,18 +92,12 @@ export default function AdminPlansPage() {
         description: form.description,
         price_monthly: form.price_monthly,
         price_yearly: form.price_yearly,
-        features,
+        features: form.features,
       }
     )
     if (!error) {
       setEditingPlan(null)
-      setForm({
-        name: '',
-        description: '',
-        price_monthly: 0,
-        price_yearly: 0,
-        features: '',
-      })
+      setForm(emptyForm)
       loadPlans()
     }
     setSaving(false)
@@ -118,7 +117,7 @@ export default function AdminPlansPage() {
       description: plan.description || '',
       price_monthly: plan.price_monthly,
       price_yearly: plan.price_yearly,
-      features: (plan.features || []).join(', '),
+      features: plan.features ?? [],
     })
   }
 
@@ -159,13 +158,7 @@ export default function AdminPlansPage() {
             onClick={() => {
               setShowCreate(true)
               setEditingPlan(null)
-              setForm({
-                name: '',
-                description: '',
-                price_monthly: 0,
-                price_yearly: 0,
-                features: '',
-              })
+              setForm(emptyForm)
             }}
             className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
           >
@@ -230,16 +223,29 @@ export default function AdminPlansPage() {
                 />
               </div>
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700">
-                  {t('admin.featuresComma')}
-                </label>
-                <input
-                  type="text"
-                  value={form.features}
-                  onChange={e => setForm({ ...form, features: e.target.value })}
-                  placeholder={t('admin.featuresPlaceholder')}
-                  className="mt-1 block w-full rounded border px-3 py-2"
-                />
+                <span className="block text-sm font-medium text-gray-700">
+                  {t('admin.features')}
+                </span>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {featureChoices.map(key => {
+                    const selected = form.features.includes(key)
+                    return (
+                      <button
+                        key={key}
+                        type="button"
+                        aria-pressed={selected}
+                        onClick={() => toggleFeature(key)}
+                        className={`rounded-full border px-3 py-1.5 text-sm ${
+                          selected
+                            ? 'border-blue-600 bg-blue-600 text-white'
+                            : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
+                        }`}
+                      >
+                        {t(`features.${key}`, { defaultValue: key })}
+                      </button>
+                    )
+                  })}
+                </div>
               </div>
             </div>
             <div className="flex gap-2">
