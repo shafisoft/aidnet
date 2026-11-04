@@ -453,6 +453,7 @@
     "invites": "Invites",
     "campaigns": "Campaigns",
     "settings": "Settings",
+    "donations": "Donations",
     "analytics": "Analytics"
   },
   "campaignForm": {
@@ -520,6 +521,13 @@
     "donateNote": "AidNet does not process payments — use the methods below to give straight to the organization.",
     "noMethods": "No donation methods listed yet.",
     "preferred": "Preferred",
+    "mobileTitle": "Mobile banking",
+    "bankTitle": "Bank transfer",
+    "bankName": "Bank",
+    "bankAccountName": "Account name",
+    "bankAccountNumber": "Account number",
+    "bankRoutingNumber": "Routing number",
+    "bankBranch": "Branch",
     "donateVia": "Donate via {{host}}",
     "qrAlt": "Donation QR code",
     "address": "Where the work happens",
@@ -554,7 +562,10 @@
     "submitReview": "Submit for Review",
     "deleteConfirm": "Delete campaign \"{{title}}\"?",
     "raisedOfGoal": "{{raised}} of {{goal}} raised",
-    "publish": "Publish"
+    "publish": "Publish",
+    "unpublish": "Unpublish",
+    "close": "Cancel Campaign",
+    "closeConfirm": "Cancel campaign \"{{title}}\"? It will permanently disappear from public view."
   },
   "profile": {
     "organization": "Organization",
@@ -631,8 +642,7 @@
     "editPlan": "Edit Plan",
     "priceMonthly": "Price Monthly ($)",
     "priceYearly": "Price Yearly ($)",
-    "featuresComma": "Features (comma-separated)",
-    "featuresPlaceholder": "members, invites, campaigns, settings, analytics",
+    "features": "Features",
     "update": "Update",
     "create": "Create",
     "queueTitle": "Campaign Review Queue",

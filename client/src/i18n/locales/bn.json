@@ -453,6 +453,7 @@
     "invites": "আমন্ত্রণ",
     "campaigns": "ক্যাম্পেইন",
     "settings": "সেটিংস",
+    "donations": "ডোনেশন",
     "analytics": "অ্যানালিটিক্স"
   },
   "campaignForm": {
@@ -520,6 +521,13 @@
     "donateNote": "AidNet পেমেন্ট গ্রহণ করে না — নিচের পদ্ধতিগুলো ব্যবহার করে সংগঠনকে সরাসরি অনুদান দিন।",
     "noMethods": "এখনো কোনো অনুদানের পদ্ধতি যোগ করা হয়নি।",
     "preferred": "প্রধান",
+    "mobileTitle": "মোবাইল ব্যাংকিং",
+    "bankTitle": "ব্যাংক ট্রান্সফার",
+    "bankName": "ব্যাংক",
+    "bankAccountName": "অ্যাকাউন্টের নাম",
+    "bankAccountNumber": "অ্যাকাউন্ট নম্বর",
+    "bankRoutingNumber": "রাউটিং নম্বর",
+    "bankBranch": "শাখা",
     "donateVia": "{{host}}-এর মাধ্যমে অনুদান দিন",
     "qrAlt": "অনুদানের কিউআর কোড",
     "address": "যেখানে কাজ হবে",
@@ -554,7 +562,10 @@
     "submitReview": "পর্যালোচনার জন্য জমা দিন",
     "deleteConfirm": "\"{{title}}\" ক্যাম্পেইনটি মুছে ফেলবেন?",
     "raisedOfGoal": "{{goal}}-এর মধ্যে {{raised}} সংগ্রহ",
-    "publish": "প্রকাশ করুন"
+    "publish": "প্রকাশ করুন",
+    "unpublish": "আনপাবলিশ",
+    "close": "ক্যাম্পেইন বাতিল করুন",
+    "closeConfirm": "\"{{title}}\" ক্যাম্পেইনটি বাতিল করবেন? এটি প্রকাশ্য দৃশ্য থেকে স্থায়ীভাবে সরে যাবে।"
   },
   "profile": {
     "organization": "সংগঠন",
@@ -631,8 +642,7 @@
     "editPlan": "প্ল্যান সম্পাদনা",
     "priceMonthly": "মাসিক মূল্য ($)",
     "priceYearly": "বার্ষিক মূল্য ($)",
-    "featuresComma": "ফিচার (কমা দিয়ে আলাদা করুন)",
-    "featuresPlaceholder": "members, invites, campaigns, settings, analytics",
+    "features": "ফিচার",
     "update": "হালনাগাদ",
     "create": "তৈরি করুন",
     "queueTitle": "ক্যাম্পেইন পর্যালোচনা সারি",
