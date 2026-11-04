@@ -352,7 +352,7 @@ function CampaignDetailContent() {
               <p className="text-sm text-gray-600">
                 {t('campaignDetail.donateNote')}
               </p>
-              <DonationMethods methods={campaign.donation_methods} />
+              <DonationMethods info={campaign.donation_methods} />
               {raised > 0 && (
                 <p className="text-xs text-gray-500">
                   {t('campaignDetail.raisedNote')}
@@ -403,101 +403,142 @@ function CampaignDetailContent() {
   )
 }
 
-function DonationMethods({
-  methods,
+// Brand names — not translated (bKash/Nagad/Rocket keep their spelling in
+// every locale, matching the campaign form labels).
+const PROVIDER_LABELS: Record<string, string> = {
+  bkash: 'bKash',
+  nagad: 'Nagad',
+  rocket: 'Rocket',
+}
+
+function MethodRow({
+  label,
+  value,
+  copyValue,
 }: {
-  methods: PublicCampaign['donation_methods']
+  label: string
+  value: string
+  copyValue?: string | null
+}) {
+  return (
+    <div className="flex items-center justify-between gap-2 border-b pb-2 last:border-b-0 last:pb-0">
+      <span className="text-gray-500">{label}</span>
+      <span className="flex items-center gap-2 text-right">
+        <span className="font-medium text-gray-900">{value}</span>
+        {copyValue && <CopyButton value={copyValue} />}
+      </span>
+    </div>
+  )
+}
+
+function DonationMethods({
+  info,
+}: {
+  info: PublicCampaign['donation_methods']
 }) {
   const { t } = useTranslation()
+  const mobile = info?.mobile ?? []
+  const bank = info?.bank ?? null
+  const hasAny =
+    mobile.length > 0 ||
+    !!bank ||
+    !!info?.donation_url ||
+    !!info?.qr_image_url ||
+    !!info?.instructions
 
-  if (!methods || methods.length === 0) {
+  if (!hasAny) {
     return <p className="text-gray-500">{t('campaignDetail.noMethods')}</p>
   }
 
   return (
-    <div className="space-y-6">
-      {methods.map((m, i) => {
-        const rows: {
-          label: string
-          value: string | null
-          copyValue: string | null
-        }[] = [
-          {
-            label: 'bKash',
-            value: m.bkash_number
-              ? `${m.bkash_number}${m.bkash_account_name ? ` (${m.bkash_account_name})` : ''}`
-              : null,
-            copyValue: m.bkash_number,
-          },
-          {
-            label: 'Nagad',
-            value: m.nagad_number
-              ? `${m.nagad_number}${m.nagad_account_name ? ` (${m.nagad_account_name})` : ''}`
-              : null,
-            copyValue: m.nagad_number,
-          },
-          {
-            label: 'Rocket',
-            value: m.rocket_number
-              ? `${m.rocket_number}${m.rocket_account_name ? ` (${m.rocket_account_name})` : ''}`
-              : null,
-            copyValue: m.rocket_number,
-          },
-          {
-            label: 'Bank',
-            value: m.bank_name
-              ? `${m.bank_name}${m.bank_account_number ? ` — ${m.bank_account_number}` : ''}${m.bank_account_name ? ` (${m.bank_account_name})` : ''}`
-              : null,
-            copyValue: m.bank_account_number ?? null,
-          },
-        ].filter(r => r.value)
-
-        return (
-          <div key={m.id ?? i} className="space-y-3 rounded-md border p-4">
-            {m.is_preferred && (
-              <span className="rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-medium text-indigo-800">
-                {t('campaignDetail.preferred')}
-              </span>
-            )}
-            {m.donation_url && (
-              <a
-                href={m.donation_url}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-block rounded-md bg-indigo-600 px-6 py-3 font-medium text-white hover:bg-indigo-700"
-              >
-                {t('campaignDetail.donateVia', {
-                  host: donationUrlLabel(m.donation_url),
-                })}
-              </a>
-            )}
-            {rows.map(r => (
-              <div
-                key={r.label}
-                className="flex items-center justify-between gap-2 border-b pb-2"
-              >
-                <span className="text-gray-500">{r.label}</span>
-                <span className="flex items-center gap-2 text-right">
-                  <span className="font-medium text-gray-900">{r.value}</span>
-                  {r.copyValue && <CopyButton value={r.copyValue} />}
-                </span>
-              </div>
-            ))}
-            {m.instructions && (
-              <p className="text-sm text-gray-600">{m.instructions}</p>
-            )}
-            {m.qr_image_url && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={m.qr_image_url}
-                alt={t('campaignDetail.qrAlt')}
-                loading="lazy"
-                className="h-40 w-40 rounded border object-contain"
-              />
-            )}
-          </div>
-        )
-      })}
+    <div className="space-y-4">
+      {info?.is_preferred && (
+        <span className="rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-medium text-indigo-800">
+          {t('campaignDetail.preferred')}
+        </span>
+      )}
+      {info?.donation_url && (
+        <a
+          href={info.donation_url}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-block rounded-md bg-indigo-600 px-6 py-3 font-medium text-white hover:bg-indigo-700"
+        >
+          {t('campaignDetail.donateVia', {
+            host: donationUrlLabel(info.donation_url),
+          })}
+        </a>
+      )}
+      {mobile.length > 0 && (
+        <div className="space-y-3 rounded-md border p-4">
+          <h3 className="text-sm font-semibold text-gray-900">
+            {t('campaignDetail.mobileTitle')}
+          </h3>
+          {mobile.map(ch => (
+            <MethodRow
+              key={ch.provider}
+              label={PROVIDER_LABELS[ch.provider] ?? ch.provider}
+              value={
+                ch.number + (ch.account_name ? ` (${ch.account_name})` : '')
+              }
+              copyValue={ch.number}
+            />
+          ))}
+        </div>
+      )}
+      {bank && (
+        <div className="space-y-3 rounded-md border p-4">
+          {/* Bank details render as one grouped block — an account is
+              name+number+routing+branch together, not loose columns. */}
+          <h3 className="text-sm font-semibold text-gray-900">
+            {t('campaignDetail.bankTitle')}
+          </h3>
+          {bank.bank_name && (
+            <MethodRow
+              label={t('campaignDetail.bankName')}
+              value={bank.bank_name}
+            />
+          )}
+          {bank.account_name && (
+            <MethodRow
+              label={t('campaignDetail.bankAccountName')}
+              value={bank.account_name}
+            />
+          )}
+          {bank.account_number && (
+            <MethodRow
+              label={t('campaignDetail.bankAccountNumber')}
+              value={bank.account_number}
+              copyValue={bank.account_number}
+            />
+          )}
+          {bank.routing_number && (
+            <MethodRow
+              label={t('campaignDetail.bankRoutingNumber')}
+              value={bank.routing_number}
+              copyValue={bank.routing_number}
+            />
+          )}
+          {bank.branch && (
+            <MethodRow
+              label={t('campaignDetail.bankBranch')}
+              value={bank.branch}
+            />
+          )}
+        </div>
+      )}
+      {info?.instructions && (
+        <p className="text-sm text-gray-600">{info.instructions}</p>
+      )}
+      {info?.qr_image_url && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={info.qr_image_url}
+          alt={t('campaignDetail.qrAlt')}
+          loading="lazy"
+          className="h-40 w-40 rounded border object-contain"
+        />
+      )}
     </div>
   )
 }

@@ -89,6 +89,37 @@ export type CampaignTag = {
   label_bn: string | null
 }
 
+/**
+ * Grouped public payment info from get_public_campaign_by_slug. Mobile
+ * channels arrive as a provider list; bank details arrive as ONE object
+ * (name + account + routing + branch) instead of the flat per-column blob
+ * that used to drop routing and branch entirely. Null when neither the
+ * campaign nor its org declares any channel.
+ */
+export type PublicMobileChannel = {
+  provider: 'bkash' | 'nagad' | 'rocket'
+  /** Always present — the SQL only emits a channel when it has a number. */
+  number: string
+  account_name: string | null
+}
+
+export type PublicBankInfo = {
+  bank_name: string | null
+  account_number: string | null
+  account_name: string | null
+  routing_number: string | null
+  branch: string | null
+}
+
+export type CampaignPaymentInfo = {
+  mobile: PublicMobileChannel[]
+  bank: PublicBankInfo | null
+  donation_url: string | null
+  qr_image_url: string | null
+  instructions: string | null
+  is_preferred: boolean
+}
+
 export type PublicCampaign = {
   id: string
   org_id: string
@@ -112,7 +143,7 @@ export type PublicCampaign = {
   address: string | null
   created_at: string | null
   updated_at: string | null
-  donation_methods: DonationMethod[]
+  donation_methods: CampaignPaymentInfo | null
   tags: CampaignTag[]
 }
 

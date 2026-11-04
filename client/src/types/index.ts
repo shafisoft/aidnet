@@ -38,15 +38,18 @@ export type {
   CampaignTag,
   CampaignBeneficiary,
   CampaignBeneficiaryDto,
+  CampaignPaymentInfo,
   CampaignPaymentMethods,
   CreateCampaignDto,
   DonationMethod,
   DonationMethodDto,
   DonationReport,
   OrgDonationReport,
+  PublicBankInfo,
   PublicCampaign,
   PublicCampaignFilters,
   PublicDonationReport,
+  PublicMobileChannel,
   UpdateCampaignDto,
 } from './campaign'
 export type {

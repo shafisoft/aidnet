@@ -1,5 +1,6 @@
 import type {
   Campaign,
+  CampaignPaymentInfo,
   PublicCampaign,
   CampaignTag,
   DonationMethod,
@@ -105,8 +106,30 @@ export const aPublicCampaign = (
   is_zakat_eligible: false,
   created_at: TS,
   updated_at: TS,
-  donation_methods: [],
+  donation_methods: null,
   tags: [],
+  ...over,
+})
+
+/** Populated grouped payment info, matching the
+ * get_public_campaign_by_slug payload shape. */
+export const aPaymentInfo = (
+  over: Partial<CampaignPaymentInfo> = {}
+): CampaignPaymentInfo => ({
+  mobile: [
+    { provider: 'bkash', number: '01700000000', account_name: 'Demo Org' },
+  ],
+  bank: {
+    bank_name: 'Dummy Bank',
+    account_number: '1234567890',
+    account_name: 'Demo Org',
+    routing_number: '012345678',
+    branch: 'Dhanmondi',
+  },
+  donation_url: null,
+  qr_image_url: null,
+  instructions: null,
+  is_preferred: false,
   ...over,
 })
 
