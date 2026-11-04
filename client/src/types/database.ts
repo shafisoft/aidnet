@@ -9,1399 +9,12 @@ export type Json =
 export type Database = {
   donate: {
     Tables: {
-      audit_logs: {
-        Row: {
-          action: string
-          created_at: string | null
-          id: string
-          ip_address: string | null
-          metadata: Json | null
-          organization_id: string | null
-          resource_id: string | null
-          resource_type: string | null
-          user_agent: string | null
-          user_id: string | null
-        }
-        ComputedFields: never
-        Insert: {
-          action: string
-          created_at?: string | null
-          id?: string
-          ip_address?: string | null
-          metadata?: Json | null
-          organization_id?: string | null
-          resource_id?: string | null
-          resource_type?: string | null
-          user_agent?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          action?: string
-          created_at?: string | null
-          id?: string
-          ip_address?: string | null
-          metadata?: Json | null
-          organization_id?: string | null
-          resource_id?: string | null
-          resource_type?: string | null
-          user_agent?: string | null
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'audit_logs_organization_id_fkey'
-            columns: ['organization_id']
-            isOneToOne: false
-            referencedRelation: 'organization_detail_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'audit_logs_organization_id_fkey'
-            columns: ['organization_id']
-            isOneToOne: false
-            referencedRelation: 'organization_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'audit_logs_organization_id_fkey'
-            columns: ['organization_id']
-            isOneToOne: false
-            referencedRelation: 'organizations'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'audit_logs_user_id_fkey'
-            columns: ['user_id']
-            isOneToOne: false
-            referencedRelation: 'profile_view'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      campaign_abuse_reports: {
-        Row: {
-          campaign_id: string
-          contact: string | null
-          created_at: string
-          details: string | null
-          id: string
-          reason: string
-          reporter_id: string | null
-          reporter_ip_hash: string | null
-          resolved_at: string | null
-          resolved_by: string | null
-        }
-        ComputedFields: never
-        Insert: {
-          campaign_id: string
-          contact?: string | null
-          created_at?: string
-          details?: string | null
-          id?: string
-          reason: string
-          reporter_id?: string | null
-          reporter_ip_hash?: string | null
-          resolved_at?: string | null
-          resolved_by?: string | null
-        }
-        Update: {
-          campaign_id?: string
-          contact?: string | null
-          created_at?: string
-          details?: string | null
-          id?: string
-          reason?: string
-          reporter_id?: string | null
-          reporter_ip_hash?: string | null
-          resolved_at?: string | null
-          resolved_by?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'campaign_abuse_reports_campaign_id_fkey'
-            columns: ['campaign_id']
-            isOneToOne: false
-            referencedRelation: 'campaigns'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'campaign_abuse_reports_reporter_id_fkey'
-            columns: ['reporter_id']
-            isOneToOne: false
-            referencedRelation: 'profile_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'campaign_abuse_reports_resolved_by_fkey'
-            columns: ['resolved_by']
-            isOneToOne: false
-            referencedRelation: 'profile_view'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      campaign_beneficiary: {
-        Row: {
-          campaign_id: string
-          created_at: string | null
-          document_url: string | null
-          full_name: string
-          id: string
-          national_id: string | null
-          notes: string | null
-          phone: string | null
-          relationship: string | null
-          updated_at: string | null
-        }
-        ComputedFields: never
-        Insert: {
-          campaign_id: string
-          created_at?: string | null
-          document_url?: string | null
-          full_name: string
-          id?: string
-          national_id?: string | null
-          notes?: string | null
-          phone?: string | null
-          relationship?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          campaign_id?: string
-          created_at?: string | null
-          document_url?: string | null
-          full_name?: string
-          id?: string
-          national_id?: string | null
-          notes?: string | null
-          phone?: string | null
-          relationship?: string | null
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'campaign_beneficiary_campaign_id_fkey'
-            columns: ['campaign_id']
-            isOneToOne: true
-            referencedRelation: 'campaigns'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      campaign_payment_methods: {
-        Row: {
-          bank_account_name: string | null
-          bank_account_number: string | null
-          bank_branch: string | null
-          bank_name: string | null
-          bank_routing_number: string | null
-          bkash_account_name: string | null
-          bkash_number: string | null
-          campaign_id: string
-          created_at: string | null
-          donation_url: string | null
-          id: string
-          instructions: string | null
-          is_preferred: boolean | null
-          nagad_account_name: string | null
-          nagad_number: string | null
-          qr_image_url: string | null
-          rocket_account_name: string | null
-          rocket_number: string | null
-          updated_at: string | null
-        }
-        ComputedFields: never
-        Insert: {
-          bank_account_name?: string | null
-          bank_account_number?: string | null
-          bank_branch?: string | null
-          bank_name?: string | null
-          bank_routing_number?: string | null
-          bkash_account_name?: string | null
-          bkash_number?: string | null
-          campaign_id: string
-          created_at?: string | null
-          donation_url?: string | null
-          id?: string
-          instructions?: string | null
-          is_preferred?: boolean | null
-          nagad_account_name?: string | null
-          nagad_number?: string | null
-          qr_image_url?: string | null
-          rocket_account_name?: string | null
-          rocket_number?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          bank_account_name?: string | null
-          bank_account_number?: string | null
-          bank_branch?: string | null
-          bank_name?: string | null
-          bank_routing_number?: string | null
-          bkash_account_name?: string | null
-          bkash_number?: string | null
-          campaign_id?: string
-          created_at?: string | null
-          donation_url?: string | null
-          id?: string
-          instructions?: string | null
-          is_preferred?: boolean | null
-          nagad_account_name?: string | null
-          nagad_number?: string | null
-          qr_image_url?: string | null
-          rocket_account_name?: string | null
-          rocket_number?: string | null
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'campaign_payment_methods_campaign_id_fkey'
-            columns: ['campaign_id']
-            isOneToOne: true
-            referencedRelation: 'campaigns'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      campaign_tag_map: {
-        Row: {
-          campaign_id: string
-          created_at: string | null
-          tag_id: string
-        }
-        ComputedFields: never
-        Insert: {
-          campaign_id: string
-          created_at?: string | null
-          tag_id: string
-        }
-        Update: {
-          campaign_id?: string
-          created_at?: string | null
-          tag_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'campaign_tag_map_campaign_id_fkey'
-            columns: ['campaign_id']
-            isOneToOne: false
-            referencedRelation: 'campaigns'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'campaign_tag_map_tag_id_fkey'
-            columns: ['tag_id']
-            isOneToOne: false
-            referencedRelation: 'campaign_tags'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      campaign_tags: {
-        Row: {
-          id: string
-          label: string
-          label_bn: string | null
-          slug: string
-        }
-        ComputedFields: never
-        Insert: {
-          id?: string
-          label: string
-          label_bn?: string | null
-          slug: string
-        }
-        Update: {
-          id?: string
-          label?: string
-          label_bn?: string | null
-          slug?: string
-        }
-        Relationships: []
-      }
-      campaigns: {
-        Row: {
-          address: string | null
-          cover_image_url: string | null
-          created_at: string | null
-          created_by: string | null
-          currency: string | null
-          description: string | null
-          end_date: string | null
-          goal_amount: number | null
-          id: string
-          is_active: boolean | null
-          is_zakat_eligible: boolean | null
-          org_id: string
-          raised_amount: number
-          slug: string
-          start_date: string | null
-          status: Database['donate']['Enums']['campaign_status'] | null
-          title: string
-          updated_at: string | null
-          verification_notes: string | null
-          verified_at: string | null
-          verified_by: string | null
-        }
-        ComputedFields: never
-        Insert: {
-          address?: string | null
-          cover_image_url?: string | null
-          created_at?: string | null
-          created_by?: string | null
-          currency?: string | null
-          description?: string | null
-          end_date?: string | null
-          goal_amount?: number | null
-          id?: string
-          is_active?: boolean | null
-          is_zakat_eligible?: boolean | null
-          org_id: string
-          raised_amount?: number
-          slug: string
-          start_date?: string | null
-          status?: Database['donate']['Enums']['campaign_status'] | null
-          title: string
-          updated_at?: string | null
-          verification_notes?: string | null
-          verified_at?: string | null
-          verified_by?: string | null
-        }
-        Update: {
-          address?: string | null
-          cover_image_url?: string | null
-          created_at?: string | null
-          created_by?: string | null
-          currency?: string | null
-          description?: string | null
-          end_date?: string | null
-          goal_amount?: number | null
-          id?: string
-          is_active?: boolean | null
-          is_zakat_eligible?: boolean | null
-          org_id?: string
-          raised_amount?: number
-          slug?: string
-          start_date?: string | null
-          status?: Database['donate']['Enums']['campaign_status'] | null
-          title?: string
-          updated_at?: string | null
-          verification_notes?: string | null
-          verified_at?: string | null
-          verified_by?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'campaigns_created_by_fkey'
-            columns: ['created_by']
-            isOneToOne: false
-            referencedRelation: 'profile_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'campaigns_org_id_fkey'
-            columns: ['org_id']
-            isOneToOne: false
-            referencedRelation: 'organization_detail_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'campaigns_org_id_fkey'
-            columns: ['org_id']
-            isOneToOne: false
-            referencedRelation: 'organization_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'campaigns_org_id_fkey'
-            columns: ['org_id']
-            isOneToOne: false
-            referencedRelation: 'organizations'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'campaigns_verified_by_fkey'
-            columns: ['verified_by']
-            isOneToOne: false
-            referencedRelation: 'profile_view'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      donation_methods: {
-        Row: {
-          bank_account_name: string | null
-          bank_account_number: string | null
-          bank_branch: string | null
-          bank_name: string | null
-          bank_routing_number: string | null
-          bkash_account_name: string | null
-          bkash_number: string | null
-          created_at: string | null
-          donation_url: string | null
-          id: string
-          instructions: string | null
-          is_preferred: boolean | null
-          nagad_account_name: string | null
-          nagad_number: string | null
-          organization_id: string
-          qr_image_url: string | null
-          rocket_account_name: string | null
-          rocket_number: string | null
-          updated_at: string | null
-        }
-        ComputedFields: never
-        Insert: {
-          bank_account_name?: string | null
-          bank_account_number?: string | null
-          bank_branch?: string | null
-          bank_name?: string | null
-          bank_routing_number?: string | null
-          bkash_account_name?: string | null
-          bkash_number?: string | null
-          created_at?: string | null
-          donation_url?: string | null
-          id?: string
-          instructions?: string | null
-          is_preferred?: boolean | null
-          nagad_account_name?: string | null
-          nagad_number?: string | null
-          organization_id: string
-          qr_image_url?: string | null
-          rocket_account_name?: string | null
-          rocket_number?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          bank_account_name?: string | null
-          bank_account_number?: string | null
-          bank_branch?: string | null
-          bank_name?: string | null
-          bank_routing_number?: string | null
-          bkash_account_name?: string | null
-          bkash_number?: string | null
-          created_at?: string | null
-          donation_url?: string | null
-          id?: string
-          instructions?: string | null
-          is_preferred?: boolean | null
-          nagad_account_name?: string | null
-          nagad_number?: string | null
-          organization_id?: string
-          qr_image_url?: string | null
-          rocket_account_name?: string | null
-          rocket_number?: string | null
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'donation_methods_organization_id_fkey'
-            columns: ['organization_id']
-            isOneToOne: false
-            referencedRelation: 'organization_detail_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'donation_methods_organization_id_fkey'
-            columns: ['organization_id']
-            isOneToOne: false
-            referencedRelation: 'organization_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'donation_methods_organization_id_fkey'
-            columns: ['organization_id']
-            isOneToOne: false
-            referencedRelation: 'organizations'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      donation_reports: {
-        Row: {
-          amount: number
-          campaign_id: string
-          created_at: string | null
-          currency: string
-          donor_name: string | null
-          id: string
-          message: string | null
-          method: string
-          org_id: string
-          reference: string | null
-          reporter_ip_hash: string | null
-          review_note: string | null
-          reviewed_at: string | null
-          reviewed_by: string | null
-          status: string
-          updated_at: string | null
-        }
-        ComputedFields: never
-        Insert: {
-          amount: number
-          campaign_id: string
-          created_at?: string | null
-          currency: string
-          donor_name?: string | null
-          id?: string
-          message?: string | null
-          method?: string
-          org_id: string
-          reference?: string | null
-          reporter_ip_hash?: string | null
-          review_note?: string | null
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          status?: string
-          updated_at?: string | null
-        }
-        Update: {
-          amount?: number
-          campaign_id?: string
-          created_at?: string | null
-          currency?: string
-          donor_name?: string | null
-          id?: string
-          message?: string | null
-          method?: string
-          org_id?: string
-          reference?: string | null
-          reporter_ip_hash?: string | null
-          review_note?: string | null
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          status?: string
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'donation_reports_campaign_id_fkey'
-            columns: ['campaign_id']
-            isOneToOne: false
-            referencedRelation: 'campaigns'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'donation_reports_org_id_fkey'
-            columns: ['org_id']
-            isOneToOne: false
-            referencedRelation: 'organization_detail_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'donation_reports_org_id_fkey'
-            columns: ['org_id']
-            isOneToOne: false
-            referencedRelation: 'organization_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'donation_reports_org_id_fkey'
-            columns: ['org_id']
-            isOneToOne: false
-            referencedRelation: 'organizations'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'donation_reports_reviewed_by_fkey'
-            columns: ['reviewed_by']
-            isOneToOne: false
-            referencedRelation: 'profile_view'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      invites: {
-        Row: {
-          accepted_at: string | null
-          created_at: string | null
-          email: string
-          expires_at: string | null
-          id: string
-          invited_by: string | null
-          organization_id: string
-          role: string | null
-          token: string
-        }
-        ComputedFields: never
-        Insert: {
-          accepted_at?: string | null
-          created_at?: string | null
-          email: string
-          expires_at?: string | null
-          id?: string
-          invited_by?: string | null
-          organization_id: string
-          role?: string | null
-          token?: string
-        }
-        Update: {
-          accepted_at?: string | null
-          created_at?: string | null
-          email?: string
-          expires_at?: string | null
-          id?: string
-          invited_by?: string | null
-          organization_id?: string
-          role?: string | null
-          token?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'invites_invited_by_fkey'
-            columns: ['invited_by']
-            isOneToOne: false
-            referencedRelation: 'profile_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'invites_organization_id_fkey'
-            columns: ['organization_id']
-            isOneToOne: false
-            referencedRelation: 'organization_detail_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'invites_organization_id_fkey'
-            columns: ['organization_id']
-            isOneToOne: false
-            referencedRelation: 'organization_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'invites_organization_id_fkey'
-            columns: ['organization_id']
-            isOneToOne: false
-            referencedRelation: 'organizations'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      org_meta: {
-        Row: {
-          address: string | null
-          contact_email: string | null
-          contact_phone: string | null
-          description: string | null
-          logo_url: string | null
-          name: string
-          organization_id: string
-          settings: Json | null
-          social_links: Json | null
-          updated_at: string | null
-          updated_by: string | null
-          website_url: string | null
-        }
-        ComputedFields: never
-        Insert: {
-          address?: string | null
-          contact_email?: string | null
-          contact_phone?: string | null
-          description?: string | null
-          logo_url?: string | null
-          name: string
-          organization_id: string
-          settings?: Json | null
-          social_links?: Json | null
-          updated_at?: string | null
-          updated_by?: string | null
-          website_url?: string | null
-        }
-        Update: {
-          address?: string | null
-          contact_email?: string | null
-          contact_phone?: string | null
-          description?: string | null
-          logo_url?: string | null
-          name?: string
-          organization_id?: string
-          settings?: Json | null
-          social_links?: Json | null
-          updated_at?: string | null
-          updated_by?: string | null
-          website_url?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'org_meta_organization_id_fkey'
-            columns: ['organization_id']
-            isOneToOne: true
-            referencedRelation: 'organization_detail_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'org_meta_organization_id_fkey'
-            columns: ['organization_id']
-            isOneToOne: true
-            referencedRelation: 'organization_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'org_meta_organization_id_fkey'
-            columns: ['organization_id']
-            isOneToOne: true
-            referencedRelation: 'organizations'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'org_meta_updated_by_fkey'
-            columns: ['updated_by']
-            isOneToOne: false
-            referencedRelation: 'profile_view'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      org_requests: {
-        Row: {
-          created_org_id: string | null
-          id: string
-          org_description: string | null
-          org_name: string
-          org_slug: string
-          rejection_reason: string | null
-          requested_at: string | null
-          reviewed_at: string | null
-          reviewed_by: string | null
-          status: string | null
-          user_id: string
-        }
-        ComputedFields: never
-        Insert: {
-          created_org_id?: string | null
-          id?: string
-          org_description?: string | null
-          org_name: string
-          org_slug: string
-          rejection_reason?: string | null
-          requested_at?: string | null
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          status?: string | null
-          user_id: string
-        }
-        Update: {
-          created_org_id?: string | null
-          id?: string
-          org_description?: string | null
-          org_name?: string
-          org_slug?: string
-          rejection_reason?: string | null
-          requested_at?: string | null
-          reviewed_at?: string | null
-          reviewed_by?: string | null
-          status?: string | null
-          user_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'org_requests_created_org_id_fkey'
-            columns: ['created_org_id']
-            isOneToOne: false
-            referencedRelation: 'organization_detail_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'org_requests_created_org_id_fkey'
-            columns: ['created_org_id']
-            isOneToOne: false
-            referencedRelation: 'organization_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'org_requests_created_org_id_fkey'
-            columns: ['created_org_id']
-            isOneToOne: false
-            referencedRelation: 'organizations'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'org_requests_reviewed_by_fkey'
-            columns: ['reviewed_by']
-            isOneToOne: false
-            referencedRelation: 'profile_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'org_requests_user_id_fkey'
-            columns: ['user_id']
-            isOneToOne: false
-            referencedRelation: 'profile_view'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      organization_members: {
-        Row: {
-          created_at: string | null
-          id: string
-          invited_by: string | null
-          is_owner: boolean
-          joined_at: string | null
-          organization_id: string | null
-          role: string
-          status: string
-          updated_at: string | null
-          user_id: string | null
-        }
-        ComputedFields: never
-        Insert: {
-          created_at?: string | null
-          id?: string
-          invited_by?: string | null
-          is_owner?: boolean
-          joined_at?: string | null
-          organization_id?: string | null
-          role?: string
-          status?: string
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          id?: string
-          invited_by?: string | null
-          is_owner?: boolean
-          joined_at?: string | null
-          organization_id?: string | null
-          role?: string
-          status?: string
-          updated_at?: string | null
-          user_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'organization_members_invited_by_fkey'
-            columns: ['invited_by']
-            isOneToOne: false
-            referencedRelation: 'profile_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'organization_members_organization_id_fkey'
-            columns: ['organization_id']
-            isOneToOne: false
-            referencedRelation: 'organization_detail_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'organization_members_organization_id_fkey'
-            columns: ['organization_id']
-            isOneToOne: false
-            referencedRelation: 'organization_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'organization_members_organization_id_fkey'
-            columns: ['organization_id']
-            isOneToOne: false
-            referencedRelation: 'organizations'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'organization_members_user_id_fkey'
-            columns: ['user_id']
-            isOneToOne: false
-            referencedRelation: 'profile_view'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      organization_subscriptions: {
-        Row: {
-          billing_period: string
-          created_at: string | null
-          current_period_end: string | null
-          current_period_start: string | null
-          id: string
-          organization_id: string
-          plan_id: string
-          status: string
-          updated_at: string | null
-        }
-        ComputedFields: never
-        Insert: {
-          billing_period?: string
-          created_at?: string | null
-          current_period_end?: string | null
-          current_period_start?: string | null
-          id?: string
-          organization_id: string
-          plan_id: string
-          status?: string
-          updated_at?: string | null
-        }
-        Update: {
-          billing_period?: string
-          created_at?: string | null
-          current_period_end?: string | null
-          current_period_start?: string | null
-          id?: string
-          organization_id?: string
-          plan_id?: string
-          status?: string
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'organization_subscriptions_organization_id_fkey'
-            columns: ['organization_id']
-            isOneToOne: false
-            referencedRelation: 'organization_detail_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'organization_subscriptions_organization_id_fkey'
-            columns: ['organization_id']
-            isOneToOne: false
-            referencedRelation: 'organization_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'organization_subscriptions_organization_id_fkey'
-            columns: ['organization_id']
-            isOneToOne: false
-            referencedRelation: 'organizations'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'organization_subscriptions_plan_id_fkey'
-            columns: ['plan_id']
-            isOneToOne: false
-            referencedRelation: 'subscription_plans'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      organizations: {
-        Row: {
-          created_at: string | null
-          created_by: string | null
-          description: string | null
-          id: string
-          kind: string
-          logo_url: string | null
-          name: string
-          org_type: string
-          settings: Json | null
-          slug: string
-          status: string | null
-          updated_at: string | null
-        }
-        ComputedFields: never
-        Insert: {
-          created_at?: string | null
-          created_by?: string | null
-          description?: string | null
-          id?: string
-          kind?: string
-          logo_url?: string | null
-          name: string
-          org_type?: string
-          settings?: Json | null
-          slug: string
-          status?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          created_by?: string | null
-          description?: string | null
-          id?: string
-          kind?: string
-          logo_url?: string | null
-          name?: string
-          org_type?: string
-          settings?: Json | null
-          slug?: string
-          status?: string | null
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'organizations_created_by_fkey'
-            columns: ['created_by']
-            isOneToOne: false
-            referencedRelation: 'profile_view'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      role_permissions: {
-        Row: {
-          created_at: string | null
-          id: string
-          permission: string
-          role: string
-        }
-        ComputedFields: never
-        Insert: {
-          created_at?: string | null
-          id?: string
-          permission: string
-          role: string
-        }
-        Update: {
-          created_at?: string | null
-          id?: string
-          permission?: string
-          role?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'role_permissions_role_fkey'
-            columns: ['role']
-            isOneToOne: false
-            referencedRelation: 'role_view'
-            referencedColumns: ['name']
-          },
-          {
-            foreignKeyName: 'role_permissions_role_fkey'
-            columns: ['role']
-            isOneToOne: false
-            referencedRelation: 'roles'
-            referencedColumns: ['name']
-          },
-        ]
-      }
-      roles: {
-        Row: {
-          created_at: string | null
-          description: string | null
-          id: string
-          is_system_role: boolean | null
-          name: string
-        }
-        ComputedFields: never
-        Insert: {
-          created_at?: string | null
-          description?: string | null
-          id?: string
-          is_system_role?: boolean | null
-          name: string
-        }
-        Update: {
-          created_at?: string | null
-          description?: string | null
-          id?: string
-          is_system_role?: boolean | null
-          name?: string
-        }
-        Relationships: []
-      }
-      subscription_history: {
-        Row: {
-          action: string
-          amount: number | null
-          created_at: string | null
-          id: string
-          invoice_number: string | null
-          notes: string | null
-          organization_id: string
-          payment_status: string | null
-          plan_id: string
-        }
-        ComputedFields: never
-        Insert: {
-          action: string
-          amount?: number | null
-          created_at?: string | null
-          id?: string
-          invoice_number?: string | null
-          notes?: string | null
-          organization_id: string
-          payment_status?: string | null
-          plan_id: string
-        }
-        Update: {
-          action?: string
-          amount?: number | null
-          created_at?: string | null
-          id?: string
-          invoice_number?: string | null
-          notes?: string | null
-          organization_id?: string
-          payment_status?: string | null
-          plan_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'subscription_history_organization_id_fkey'
-            columns: ['organization_id']
-            isOneToOne: false
-            referencedRelation: 'organization_detail_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'subscription_history_organization_id_fkey'
-            columns: ['organization_id']
-            isOneToOne: false
-            referencedRelation: 'organization_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'subscription_history_organization_id_fkey'
-            columns: ['organization_id']
-            isOneToOne: false
-            referencedRelation: 'organizations'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'subscription_history_plan_id_fkey'
-            columns: ['plan_id']
-            isOneToOne: false
-            referencedRelation: 'subscription_plans'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      subscription_plans: {
-        Row: {
-          created_at: string | null
-          description: string | null
-          features: Json | null
-          id: string
-          is_active: boolean | null
-          name: string
-          price_monthly: number | null
-          price_yearly: number | null
-          updated_at: string | null
-        }
-        ComputedFields: never
-        Insert: {
-          created_at?: string | null
-          description?: string | null
-          features?: Json | null
-          id?: string
-          is_active?: boolean | null
-          name: string
-          price_monthly?: number | null
-          price_yearly?: number | null
-          updated_at?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          description?: string | null
-          features?: Json | null
-          id?: string
-          is_active?: boolean | null
-          name?: string
-          price_monthly?: number | null
-          price_yearly?: number | null
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      todos: {
-        Row: {
-          completed: boolean | null
-          created_at: string | null
-          created_by: string | null
-          description: string | null
-          id: string
-          organization_id: string
-          title: string
-          updated_at: string | null
-        }
-        ComputedFields: never
-        Insert: {
-          completed?: boolean | null
-          created_at?: string | null
-          created_by?: string | null
-          description?: string | null
-          id?: string
-          organization_id: string
-          title: string
-          updated_at?: string | null
-        }
-        Update: {
-          completed?: boolean | null
-          created_at?: string | null
-          created_by?: string | null
-          description?: string | null
-          id?: string
-          organization_id?: string
-          title?: string
-          updated_at?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'todos_created_by_fkey'
-            columns: ['created_by']
-            isOneToOne: false
-            referencedRelation: 'profile_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'todos_organization_id_fkey'
-            columns: ['organization_id']
-            isOneToOne: false
-            referencedRelation: 'organization_detail_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'todos_organization_id_fkey'
-            columns: ['organization_id']
-            isOneToOne: false
-            referencedRelation: 'organization_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'todos_organization_id_fkey'
-            columns: ['organization_id']
-            isOneToOne: false
-            referencedRelation: 'organizations'
-            referencedColumns: ['id']
-          },
-        ]
-      }
+      [_ in never]: never
     }
     Views: {
-      member_view: {
-        Row: {
-          avatar_url: string | null
-          created_at: string | null
-          email: string | null
-          full_name: string | null
-          id: string | null
-          joined_at: string | null
-          organization_id: string | null
-          role: string | null
-          status: string | null
-          user_id: string | null
-        }
-        ComputedFields: never
-        Relationships: [
-          {
-            foreignKeyName: 'organization_members_organization_id_fkey'
-            columns: ['organization_id']
-            isOneToOne: false
-            referencedRelation: 'organization_detail_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'organization_members_organization_id_fkey'
-            columns: ['organization_id']
-            isOneToOne: false
-            referencedRelation: 'organization_view'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'organization_members_organization_id_fkey'
-            columns: ['organization_id']
-            isOneToOne: false
-            referencedRelation: 'organizations'
-            referencedColumns: ['id']
-          },
-          {
-            foreignKeyName: 'organization_members_user_id_fkey'
-            columns: ['user_id']
-            isOneToOne: false
-            referencedRelation: 'profile_view'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      organization_detail_view: {
-        Row: {
-          created_at: string | null
-          description: string | null
-          id: string | null
-          logo_url: string | null
-          member_count: number | null
-          name: string | null
-          settings: Json | null
-          slug: string | null
-          updated_at: string | null
-        }
-        ComputedFields: never
-        Relationships: []
-      }
-      organization_view: {
-        Row: {
-          created_at: string | null
-          description: string | null
-          id: string | null
-          joined_at: string | null
-          logo_url: string | null
-          membership_status: string | null
-          name: string | null
-          settings: Json | null
-          slug: string | null
-          updated_at: string | null
-          user_id: string | null
-          user_role: string | null
-        }
-        ComputedFields: never
-        Relationships: [
-          {
-            foreignKeyName: 'organization_members_user_id_fkey'
-            columns: ['user_id']
-            isOneToOne: false
-            referencedRelation: 'profile_view'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      profile_view: {
-        Row: {
-          avatar_url: string | null
-          created_at: string | null
-          email: string | null
-          full_name: string | null
-          id: string | null
-          metadata: Json | null
-          updated_at: string | null
-        }
-        ComputedFields: never
-        Insert: {
-          avatar_url?: string | null
-          created_at?: string | null
-          email?: string | null
-          full_name?: string | null
-          id?: string | null
-          metadata?: Json | null
-          updated_at?: string | null
-        }
-        Update: {
-          avatar_url?: string | null
-          created_at?: string | null
-          email?: string | null
-          full_name?: string | null
-          id?: string | null
-          metadata?: Json | null
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      role_view: {
-        Row: {
-          created_at: string | null
-          description: string | null
-          id: string | null
-          is_system_role: boolean | null
-          name: string | null
-        }
-        ComputedFields: never
-        Insert: {
-          created_at?: string | null
-          description?: string | null
-          id?: string | null
-          is_system_role?: boolean | null
-          name?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          description?: string | null
-          id?: string | null
-          is_system_role?: boolean | null
-          name?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
-      __probe_rest_target: { Args: Record<PropertyKey, never>; Returns: number }
       accept_invite: { Args: { p_token: string }; Returns: boolean }
       add_organization_member: {
         Args: {
@@ -1409,18 +22,7 @@ export type Database = {
           target_org_id: string
           target_user_email: string
         }
-        Returns: {
-          avatar_url: string | null
-          created_at: string | null
-          email: string | null
-          full_name: string | null
-          id: string | null
-          joined_at: string | null
-          organization_id: string | null
-          role: string | null
-          status: string | null
-          user_id: string | null
-        }[]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'member_view'
@@ -1455,22 +57,22 @@ export type Database = {
           p_new_plan_id: string
           p_org_id: string
         }
-        Returns: {
-          billing_period: string
-          created_at: string | null
-          current_period_end: string | null
-          current_period_start: string | null
-          id: string
-          organization_id: string
-          plan_id: string
-          status: string
-          updated_at: string | null
-        }
+        Returns: unknown
         SetofOptions: {
           from: '*'
           to: 'organization_subscriptions'
           isOneToOne: true
           isSetofReturn: false
+        }
+      }
+      close_campaign: {
+        Args: { p_campaign_id: string }
+        Returns: unknown[]
+        SetofOptions: {
+          from: '*'
+          to: 'campaigns'
+          isOneToOne: false
+          isSetofReturn: true
         }
       }
       confirm_donation_report: {
@@ -1491,29 +93,7 @@ export type Database = {
           p_start_date?: string
           p_title: string
         }
-        Returns: {
-          address: string | null
-          cover_image_url: string | null
-          created_at: string | null
-          created_by: string | null
-          currency: string | null
-          description: string | null
-          end_date: string | null
-          goal_amount: number | null
-          id: string
-          is_active: boolean | null
-          is_zakat_eligible: boolean | null
-          org_id: string
-          raised_amount: number
-          slug: string
-          start_date: string | null
-          status: Database['donate']['Enums']['campaign_status'] | null
-          title: string
-          updated_at: string | null
-          verification_notes: string | null
-          verified_at: string | null
-          verified_by: string | null
-        }[]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'campaigns'
@@ -1523,17 +103,7 @@ export type Database = {
       }
       create_invite: {
         Args: { p_email: string; p_organization_id: string; p_role?: string }
-        Returns: {
-          accepted_at: string | null
-          created_at: string | null
-          email: string
-          expires_at: string | null
-          id: string
-          invited_by: string | null
-          organization_id: string
-          role: string | null
-          token: string
-        }[]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'invites'
@@ -1548,20 +118,7 @@ export type Database = {
           org_settings?: Json
           org_slug: string
         }
-        Returns: {
-          created_at: string | null
-          description: string | null
-          id: string | null
-          joined_at: string | null
-          logo_url: string | null
-          membership_status: string | null
-          name: string | null
-          settings: Json | null
-          slug: string | null
-          updated_at: string | null
-          user_id: string | null
-          user_role: string | null
-        }[]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'organization_view'
@@ -1581,17 +138,7 @@ export type Database = {
           p_price_monthly: number
           p_price_yearly: number
         }
-        Returns: {
-          created_at: string | null
-          description: string | null
-          features: Json | null
-          id: string
-          is_active: boolean | null
-          name: string
-          price_monthly: number | null
-          price_yearly: number | null
-          updated_at: string | null
-        }
+        Returns: unknown
         SetofOptions: {
           from: '*'
           to: 'subscription_plans'
@@ -1605,16 +152,7 @@ export type Database = {
           p_organization_id: string
           p_title: string
         }
-        Returns: {
-          completed: boolean | null
-          created_at: string | null
-          created_by: string | null
-          description: string | null
-          id: string
-          organization_id: string
-          title: string
-          updated_at: string | null
-        }[]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'todos'
@@ -1670,29 +208,7 @@ export type Database = {
       }
       get_campaign: {
         Args: { p_campaign_id: string }
-        Returns: {
-          address: string | null
-          cover_image_url: string | null
-          created_at: string | null
-          created_by: string | null
-          currency: string | null
-          description: string | null
-          end_date: string | null
-          goal_amount: number | null
-          id: string
-          is_active: boolean | null
-          is_zakat_eligible: boolean | null
-          org_id: string
-          raised_amount: number
-          slug: string
-          start_date: string | null
-          status: Database['donate']['Enums']['campaign_status'] | null
-          title: string
-          updated_at: string | null
-          verification_notes: string | null
-          verified_at: string | null
-          verified_by: string | null
-        }[]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'campaigns'
@@ -1713,29 +229,7 @@ export type Database = {
       }
       get_campaign_by_slug: {
         Args: { p_slug: string }
-        Returns: {
-          address: string | null
-          cover_image_url: string | null
-          created_at: string | null
-          created_by: string | null
-          currency: string | null
-          description: string | null
-          end_date: string | null
-          goal_amount: number | null
-          id: string
-          is_active: boolean | null
-          is_zakat_eligible: boolean | null
-          org_id: string
-          raised_amount: number
-          slug: string
-          start_date: string | null
-          status: Database['donate']['Enums']['campaign_status'] | null
-          title: string
-          updated_at: string | null
-          verification_notes: string | null
-          verified_at: string | null
-          verified_by: string | null
-        }[]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'campaigns'
@@ -1770,12 +264,7 @@ export type Database = {
       }
       get_campaign_tags: {
         Args: Record<PropertyKey, never>
-        Returns: {
-          id: string
-          label: string
-          label_bn: string | null
-          slug: string
-        }[]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'campaign_tags'
@@ -1785,29 +274,7 @@ export type Database = {
       }
       get_campaigns: {
         Args: { p_org_id: string }
-        Returns: {
-          address: string | null
-          cover_image_url: string | null
-          created_at: string | null
-          created_by: string | null
-          currency: string | null
-          description: string | null
-          end_date: string | null
-          goal_amount: number | null
-          id: string
-          is_active: boolean | null
-          is_zakat_eligible: boolean | null
-          org_id: string
-          raised_amount: number
-          slug: string
-          start_date: string | null
-          status: Database['donate']['Enums']['campaign_status'] | null
-          title: string
-          updated_at: string | null
-          verification_notes: string | null
-          verified_at: string | null
-          verified_by: string | null
-        }[]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'campaigns'
@@ -1817,27 +284,7 @@ export type Database = {
       }
       get_donation_methods: {
         Args: { p_org_id: string }
-        Returns: {
-          bank_account_name: string | null
-          bank_account_number: string | null
-          bank_branch: string | null
-          bank_name: string | null
-          bank_routing_number: string | null
-          bkash_account_name: string | null
-          bkash_number: string | null
-          created_at: string | null
-          donation_url: string | null
-          id: string
-          instructions: string | null
-          is_preferred: boolean | null
-          nagad_account_name: string | null
-          nagad_number: string | null
-          organization_id: string
-          qr_image_url: string | null
-          rocket_account_name: string | null
-          rocket_number: string | null
-          updated_at: string | null
-        }[]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'donation_methods'
@@ -1847,17 +294,7 @@ export type Database = {
       }
       get_invites: {
         Args: { p_organization_id: string }
-        Returns: {
-          accepted_at: string | null
-          created_at: string | null
-          email: string
-          expires_at: string | null
-          id: string
-          invited_by: string | null
-          organization_id: string
-          role: string | null
-          token: string
-        }[]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'invites'
@@ -1941,20 +378,7 @@ export type Database = {
       }
       get_org_meta: {
         Args: { p_org_id: string }
-        Returns: {
-          address: string | null
-          contact_email: string | null
-          contact_phone: string | null
-          description: string | null
-          logo_url: string | null
-          name: string
-          organization_id: string
-          settings: Json | null
-          social_links: Json | null
-          updated_at: string | null
-          updated_by: string | null
-          website_url: string | null
-        }[]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'org_meta'
@@ -1997,18 +421,7 @@ export type Database = {
       }
       get_organization_members: {
         Args: { target_org_id: string }
-        Returns: {
-          avatar_url: string | null
-          created_at: string | null
-          email: string | null
-          full_name: string | null
-          id: string | null
-          joined_at: string | null
-          organization_id: string | null
-          role: string | null
-          status: string | null
-          user_id: string | null
-        }[]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'member_view'
@@ -2034,29 +447,7 @@ export type Database = {
       }
       get_pending_campaigns: {
         Args: Record<PropertyKey, never>
-        Returns: {
-          address: string | null
-          cover_image_url: string | null
-          created_at: string | null
-          created_by: string | null
-          currency: string | null
-          description: string | null
-          end_date: string | null
-          goal_amount: number | null
-          id: string
-          is_active: boolean | null
-          is_zakat_eligible: boolean | null
-          org_id: string
-          raised_amount: number
-          slug: string
-          start_date: string | null
-          status: Database['donate']['Enums']['campaign_status'] | null
-          title: string
-          updated_at: string | null
-          verification_notes: string | null
-          verified_at: string | null
-          verified_by: string | null
-        }[]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'campaigns'
@@ -2183,17 +574,7 @@ export type Database = {
       }
       get_subscription_plans: {
         Args: Record<PropertyKey, never>
-        Returns: {
-          created_at: string | null
-          description: string | null
-          features: Json | null
-          id: string
-          is_active: boolean | null
-          name: string
-          price_monthly: number | null
-          price_yearly: number | null
-          updated_at: string | null
-        }[]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'subscription_plans'
@@ -2203,15 +584,7 @@ export type Database = {
       }
       get_system_admins: {
         Args: Record<PropertyKey, never>
-        Returns: {
-          avatar_url: string | null
-          created_at: string | null
-          email: string | null
-          full_name: string | null
-          id: string | null
-          metadata: Json | null
-          updated_at: string | null
-        }[]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'profile_view'
@@ -2230,16 +603,7 @@ export type Database = {
       }
       get_todos: {
         Args: { p_organization_id: string }
-        Returns: {
-          completed: boolean | null
-          created_at: string | null
-          created_by: string | null
-          description: string | null
-          id: string
-          organization_id: string
-          title: string
-          updated_at: string | null
-        }[]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'todos'
@@ -2249,15 +613,7 @@ export type Database = {
       }
       get_user_profile: {
         Args: { target_user_id: string }
-        Returns: {
-          avatar_url: string | null
-          created_at: string | null
-          email: string | null
-          full_name: string | null
-          id: string | null
-          metadata: Json | null
-          updated_at: string | null
-        }[]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'profile_view'
@@ -2334,29 +690,7 @@ export type Database = {
       }
       publish_campaign: {
         Args: { p_campaign_id: string }
-        Returns: {
-          address: string | null
-          cover_image_url: string | null
-          created_at: string | null
-          created_by: string | null
-          currency: string | null
-          description: string | null
-          end_date: string | null
-          goal_amount: number | null
-          id: string
-          is_active: boolean | null
-          is_zakat_eligible: boolean | null
-          org_id: string
-          raised_amount: number
-          slug: string
-          start_date: string | null
-          status: Database['donate']['Enums']['campaign_status'] | null
-          title: string
-          updated_at: string | null
-          verification_notes: string | null
-          verified_at: string | null
-          verified_by: string | null
-        }[]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'campaigns'
@@ -2366,29 +700,7 @@ export type Database = {
       }
       reject_campaign: {
         Args: { p_campaign_id: string; p_notes?: string }
-        Returns: {
-          address: string | null
-          cover_image_url: string | null
-          created_at: string | null
-          created_by: string | null
-          currency: string | null
-          description: string | null
-          end_date: string | null
-          goal_amount: number | null
-          id: string
-          is_active: boolean | null
-          is_zakat_eligible: boolean | null
-          org_id: string
-          raised_amount: number
-          slug: string
-          start_date: string | null
-          status: Database['donate']['Enums']['campaign_status'] | null
-          title: string
-          updated_at: string | null
-          verification_notes: string | null
-          verified_at: string | null
-          verified_by: string | null
-        }[]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'campaigns'
@@ -2481,29 +793,7 @@ export type Database = {
       set_system_admin: { Args: { p_user_id: string }; Returns: boolean }
       submit_campaign_for_review: {
         Args: { p_campaign_id: string }
-        Returns: {
-          address: string | null
-          cover_image_url: string | null
-          created_at: string | null
-          created_by: string | null
-          currency: string | null
-          description: string | null
-          end_date: string | null
-          goal_amount: number | null
-          id: string
-          is_active: boolean | null
-          is_zakat_eligible: boolean | null
-          org_id: string
-          raised_amount: number
-          slug: string
-          start_date: string | null
-          status: Database['donate']['Enums']['campaign_status'] | null
-          title: string
-          updated_at: string | null
-          verification_notes: string | null
-          verified_at: string | null
-          verified_by: string | null
-        }[]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'campaigns'
@@ -2521,17 +811,7 @@ export type Database = {
       }
       subscribe_to_plan: {
         Args: { p_billing_period: string; p_org_id: string; p_plan_id: string }
-        Returns: {
-          billing_period: string
-          created_at: string | null
-          current_period_end: string | null
-          current_period_start: string | null
-          id: string
-          organization_id: string
-          plan_id: string
-          status: string
-          updated_at: string | null
-        }
+        Returns: unknown
         SetofOptions: {
           from: '*'
           to: 'organization_subscriptions'
@@ -2544,6 +824,16 @@ export type Database = {
         Returns: undefined
       }
       unpause_subscription: { Args: { p_org_id: string }; Returns: boolean }
+      unpublish_campaign: {
+        Args: { p_campaign_id: string }
+        Returns: unknown[]
+        SetofOptions: {
+          from: '*'
+          to: 'campaigns'
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       update_campaign: {
         Args: {
           p_address?: string
@@ -2559,29 +849,7 @@ export type Database = {
           p_status?: Database['donate']['Enums']['campaign_status']
           p_title?: string
         }
-        Returns: {
-          address: string | null
-          cover_image_url: string | null
-          created_at: string | null
-          created_by: string | null
-          currency: string | null
-          description: string | null
-          end_date: string | null
-          goal_amount: number | null
-          id: string
-          is_active: boolean | null
-          is_zakat_eligible: boolean | null
-          org_id: string
-          raised_amount: number
-          slug: string
-          start_date: string | null
-          status: Database['donate']['Enums']['campaign_status'] | null
-          title: string
-          updated_at: string | null
-          verification_notes: string | null
-          verified_at: string | null
-          verified_by: string | null
-        }[]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'campaigns'
@@ -2595,18 +863,7 @@ export type Database = {
           target_org_id: string
           target_user_id: string
         }
-        Returns: {
-          avatar_url: string | null
-          created_at: string | null
-          email: string | null
-          full_name: string | null
-          id: string | null
-          joined_at: string | null
-          organization_id: string | null
-          role: string | null
-          status: string | null
-          user_id: string | null
-        }[]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'member_view'
@@ -2620,15 +877,7 @@ export type Database = {
           new_full_name?: string
           new_metadata?: Json
         }
-        Returns: {
-          avatar_url: string | null
-          created_at: string | null
-          email: string | null
-          full_name: string | null
-          id: string | null
-          metadata: Json | null
-          updated_at: string | null
-        }[]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'profile_view'
@@ -2659,20 +908,7 @@ export type Database = {
           new_slug?: string
           target_org_id: string
         }
-        Returns: {
-          created_at: string | null
-          description: string | null
-          id: string | null
-          joined_at: string | null
-          logo_url: string | null
-          membership_status: string | null
-          name: string | null
-          settings: Json | null
-          slug: string | null
-          updated_at: string | null
-          user_id: string | null
-          user_role: string | null
-        }[]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'organization_view'
@@ -2690,17 +926,7 @@ export type Database = {
           p_price_monthly: number
           p_price_yearly: number
         }
-        Returns: {
-          created_at: string | null
-          description: string | null
-          features: Json | null
-          id: string
-          is_active: boolean | null
-          name: string
-          price_monthly: number | null
-          price_yearly: number | null
-          updated_at: string | null
-        }
+        Returns: unknown
         SetofOptions: {
           from: '*'
           to: 'subscription_plans'
@@ -2715,16 +941,7 @@ export type Database = {
           p_title?: string
           p_todo_id: string
         }
-        Returns: {
-          completed: boolean | null
-          created_at: string | null
-          created_by: string | null
-          description: string | null
-          id: string
-          organization_id: string
-          title: string
-          updated_at: string | null
-        }[]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'todos'
@@ -2751,27 +968,7 @@ export type Database = {
           p_rocket_account_name?: string
           p_rocket_number?: string
         }
-        Returns: {
-          bank_account_name: string | null
-          bank_account_number: string | null
-          bank_branch: string | null
-          bank_name: string | null
-          bank_routing_number: string | null
-          bkash_account_name: string | null
-          bkash_number: string | null
-          created_at: string | null
-          donation_url: string | null
-          id: string
-          instructions: string | null
-          is_preferred: boolean | null
-          nagad_account_name: string | null
-          nagad_number: string | null
-          organization_id: string
-          qr_image_url: string | null
-          rocket_account_name: string | null
-          rocket_number: string | null
-          updated_at: string | null
-        }[]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'donation_methods'
@@ -2785,29 +982,7 @@ export type Database = {
       }
       verify_campaign: {
         Args: { p_campaign_id: string; p_notes?: string }
-        Returns: {
-          address: string | null
-          cover_image_url: string | null
-          created_at: string | null
-          created_by: string | null
-          currency: string | null
-          description: string | null
-          end_date: string | null
-          goal_amount: number | null
-          id: string
-          is_active: boolean | null
-          is_zakat_eligible: boolean | null
-          org_id: string
-          raised_amount: number
-          slug: string
-          start_date: string | null
-          status: Database['donate']['Enums']['campaign_status'] | null
-          title: string
-          updated_at: string | null
-          verification_notes: string | null
-          verified_at: string | null
-          verified_by: string | null
-        }[]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'campaigns'
