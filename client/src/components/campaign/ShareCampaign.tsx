@@ -11,17 +11,11 @@ import { getAppBasePath } from '@/lib/basePath'
 // slug; utm_source tags the channel so share-driven visits are visible
 // later without any backend change.
 //
-// When OG previews are deployed, the shared link IS the og edge function:
-// link-preview crawlers get OG HTML there, humans are 302'd to the page
-// (utm params forwarded). NEXT_PUBLIC_OG_PREVIEW_URL is the function URL
-// without query, e.g. https://<ref>.supabase.co/functions/v1/og — set it
-// only where the function is actually deployed (production build); dev
-// and e2e fall back to the direct page link.
+// The copied/shared URL is ALWAYS the real site URL — never the og edge
+// function. That function stays crawler-facing only (OG HTML for link
+// previews, 302 for humans); handing out its supabase.co URL to users
+// leaks an infrastructure domain nobody can read.
 function campaignUrl(slug: string, utmSource: string): string {
-  const ogBase = process.env.NEXT_PUBLIC_OG_PREVIEW_URL
-  if (ogBase) {
-    return `${ogBase.replace(/\/+$/, '')}?slug=${encodeURIComponent(slug)}&utm_source=${utmSource}`
-  }
   const base = typeof window === 'undefined' ? '' : window.location.origin
   const path = `${getAppBasePath()}/campaigns/detail/?slug=${encodeURIComponent(slug)}`
   return `${base}${path}&utm_source=${utmSource}`
