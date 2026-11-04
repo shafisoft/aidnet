@@ -55,7 +55,7 @@
     "signUp": "Sign up"
   },
   "footer": {
-    "tagline": "Transparent giving for causes that matter.",
+    "tagline": "Transparent giving for meaningful causes.",
     "navAria": "Footer navigation",
     "about": "About Us",
     "privacy": "Privacy Policy",
@@ -70,9 +70,9 @@
     "orgsBody": "Once reviewed and approved, your organization can launch its own campaigns.",
     "orgsCta": "Register your organization",
     "fundraiseTitle": "Want to fundraise for a cause?",
-    "fundraiseBody": "Campaigns run under verified organizations — request one and start fundraising.",
+    "fundraiseBody": "Join an existing organization to fundraise under its name, or create your own organization. Your organization will be set up automatically.",
     "fundraiseCta": "Start fundraising",
-    "aidTitle": "Looking for aid?",
+    "aidTitle": "Need assistance?",
     "aidBody": "Tell us about the situation and we will try to connect you with verified organizations that may be able to help.",
     "aidCta": "Reach out"
   },
@@ -84,7 +84,7 @@
     "browseCampaigns": "Browse campaigns",
     "howTitle": "How giving works",
     "how1Title": "Browse verified campaigns",
-    "how1Body": "Every organization is reviewed and approved by administrators before it can fundraise.",
+    "how1Body": "Every organization is reviewed and approved by administrators before it can launch campaigns.",
     "how2Title": "Pick the cause closest to your heart",
     "how2Body": "Filter by zakat eligibility and give to exactly what matters to you.",
     "how3Title": "Give directly, with confidence",
@@ -93,7 +93,7 @@
     "seeMore": "See more →",
     "loadingCampaigns": "Loading campaigns...",
     "trustedTitle": "Trusted Organizations",
-    "trustedBody": "Every organization is reviewed and approved before they can launch campaigns.",
+    "trustedBody": "Organizations are reviewed and approved before they can launch campaigns.",
     "transparentTitle": "Transparent Campaigns",
     "transparentBody": "Browse live campaigns with clear goals, descriptions, and donation methods.",
     "easyTitle": "Easy Donations",
@@ -118,7 +118,7 @@
     "showingCount_other": "Showing {{count}} campaigns",
     "loading": "Loading campaigns...",
     "error": "We couldn't load campaigns right now. Please try again.",
-    "zakatHint": "Zakat eligibility is declared by the organization running the campaign.",
+    "zakatHint": "The organization running the campaign determines and declares whether it is zakat-eligible.",
     "emptyZakat": "No zakat-eligible campaigns found.",
     "emptyOrg": "No campaigns found for this organization."
   },
@@ -131,7 +131,7 @@
     "howOrgs": "Organizations request to join and are reviewed by administrators before approval.",
     "howCampaigns": "Approved organizations create and manage their own donation campaigns.",
     "howDonors": "Donors browse live campaigns and contribute through the donation method of their choice.",
-    "howRoles": "Role-based access ensures the right people manage the right things.",
+    "howRoles": "Each person receives access based on their role and responsibilities.",
     "trustTitle": "Why You Can Trust Us",
     "trustBody": "Every organization is reviewed before it can launch a campaign, and every campaign states its goal, description, and donation methods up front.",
     "cta": "Browse live campaigns →",
@@ -241,7 +241,7 @@
     "verificationEmailSending": "Sending...",
     "verificationEmailSent": "Verification email sent to {{email}}. Check your inbox (and spam folder).",
     "backToLogin": "Back to login",
-    "brandLine": "Every organization verified. Every gift goes straight to the cause."
+    "brandLine": "Join an existing organization or create your own. Your organization is set up automatically."
   },
   "resetPassword": {
     "title": "Reset Password",
@@ -296,7 +296,7 @@
   "donationReport": {
     "cta": "I donated",
     "dialogTitle": "Report your donation",
-    "intro": "Tell {{org}} about the transfer you made so they can confirm it here. This does not move any money.",
+    "intro": "Tell {{org}} about your donation so they can confirm it here. This does not transfer any money.",
     "amount": "Amount",
     "amountRequired": "Please enter an amount greater than zero.",
     "method": "Method",
@@ -310,7 +310,7 @@
     "submit": "Send report",
     "submitting": "Sending...",
     "successTitle": "Thank you!",
-    "successBody": "Your report was sent to {{org}} for confirmation. Until they confirm it, your {{amount}} {{currency}} shows on the campaign as “awaiting confirmation” and is not part of the raised total yet.",
+    "successBody": "Your report has been sent to {{org}} for confirmation. Until they confirm it, your {{amount}} {{currency}} donation will appear as “awaiting confirmation” and won't be included in the raised total.",
     "awaitingChip": "Awaiting confirmation",
     "close": "Close",
     "noMoneyNote": "This reports a transfer you already made — it does not move money. See the",
@@ -343,7 +343,7 @@
     "submit": "Send report",
     "submitting": "Sending…",
     "successTitle": "Thank you",
-    "successBody": "Your report has reached our review team. We check every report and act on ones that break the rules.",
+    "successBody": "Your report has been sent to our review team. We review every report and take appropriate action when rules are violated.",
     "close": "Close"
   },
   "members": {
@@ -373,7 +373,7 @@
     "noPermission": "You don't have permission to edit settings."
   },
   "orgRequest": {
-    "title": "Request an organization",
+    "title": "Register your organization",
     "subtitle": "Submit your organization for review and approval",
     "orgName": "Organization Name",
     "orgNamePlaceholder": "My Organization",
@@ -398,7 +398,7 @@
   },
   "orgs": {
     "title": "Organizations",
-    "request": "Request an organization",
+    "request": "Register your organization",
     "yourRole": "Your role: {{role}}",
     "empty": "No organizations yet. Submit an organization request to get started."
   },
@@ -425,7 +425,7 @@
   "selector": {
     "title": "Select an Organization",
     "subtitle": "You belong to multiple organizations. Choose one to continue.",
-    "personalBadge": "Personal"
+    "personalBadge": "Your organization"
   },
   "status": {
     "draft": "Draft",
@@ -528,14 +528,14 @@
   },
   "campaignNew": {
     "title": "New Campaign",
-    "choiceTitle": "How do you want to raise funds?",
+    "choiceTitle": "How would you like to fundraise?",
     "choiceBody": "Pick the option that fits you — you can always do the others later.",
-    "startOwn": "Start my own fundraiser",
-    "startOwnHelp": "Raise money yourself, without an organization.",
-    "registerOrg": "Register a new organization",
-    "registerOrgHelp": "For charities and groups that raise funds together. New organizations are reviewed before going live.",
-    "haveInvite": "I have an invite",
-    "haveInviteHelp": "An organization invited you by email — paste your invite link or code.",
+    "startOwn": "Create your own organization",
+    "startOwnHelp": "Create your own organization and start fundraising. We'll set it up automatically.",
+    "registerOrg": "Join an existing organization",
+    "registerOrgHelp": "Raise funds under an existing organization's name. Ask its administrator to invite you.",
+    "haveInvite": "I have an invitation",
+    "haveInviteHelp": "An organization has invited you by email. Paste your invitation link or code here.",
     "creatingIndividual": "Setting up your fundraiser…",
     "individualError": "Could not set up your fundraiser. Please try again."
   },
@@ -727,6 +727,6 @@
     "whatsapp": "WhatsApp",
     "facebook": "Facebook",
     "more": "More…",
-    "campaignOnAidNet": "a fundraiser on AidNet"
+    "campaignOnAidNet": "A campaign on AidNet"
   }
 }
