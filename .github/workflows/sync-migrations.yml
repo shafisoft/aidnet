@@ -1,0 +1,88 @@
+# EVERY product repo (donate, pcare, officerider, zikr, personal-transactions,
+# quiz-app-ws). Requires one secret in each product repo:
+#   PLATFORM_PAT — fine-grained PAT on shafisoft with Contents+Pull requests
+#                  read/write on shafisoft/platform only.
+#
+# Flow: push to the product repo's main touching supabase/migrations/**
+#   → this workflow copies the ADDED files into shafisoft/platform
+#   → runs the platform guard (duplicate versions, CLI-clean SQL)
+#   → opens/updates one PR per product (branch sync/<product>)
+#   → merging that PR triggers platform's deploy-hosted workflow.
+
+name: sync-migrations
+
+on:
+  push:
+    branches: [main]
+    paths: ['supabase/migrations/**']
+
+concurrency:
+  group: sync-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect added migrations
+        id: added
+        run: |
+          before='${{ github.event.before }}'
+          if [ "$before" = '0000000000000000000000000000000000000000' ]; then
+            # first push with the workflow installed: offer the whole stream;
+            # the platform guard rejects versions already consolidated
+            files=$(git ls-files -- 'supabase/migrations/*.sql')
+          else
+            files=$(git diff --name-only --diff-filter=A "$before" "${{ github.sha }}" -- supabase/migrations || true)
+          fi
+          files=$(printf '%s\n' "$files" | grep -E 'supabase/migrations/[0-9]{14}_[a-z0-9_]+\.sql$' | sort -u || true)
+          {
+            echo 'files<<EOF'
+            printf '%s\n' "$files"
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Copy into platform repo
+        if: steps.added.outputs.files != ''
+        uses: actions/checkout@v4
+        with:
+          repository: shafisoft/platform
+          token: ${{ secrets.PLATFORM_PAT }}
+          path: platform
+          ref: main
+
+      - name: Sync and guard
+        if: steps.added.outputs.files != ''
+        env:
+          FILES: ${{ steps.added.outputs.files }}
+        run: |
+          product="${GITHUB_REPOSITORY#*/}"
+          while IFS= read -r f; do
+            [ -z "$f" ] && continue
+            cp "$f" "platform/supabase/migrations/$(basename "$f")"
+          done <<< "$FILES"
+          echo "copying $(printf '%s\n' "$FILES" | grep -c .) file(s) from $product"
+          sh platform/scripts/check-migrations.sh
+
+      - name: Open PR
+        if: steps.added.outputs.files != ''
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.PLATFORM_PAT }}
+          path: platform
+          base: main
+          branch: sync/${{ github.event.repository.name }}
+          commit-message: 'sync(${{ github.event.repository.name }}): new migrations from ${{ github.sha }}'
+          title: 'sync(${{ github.event.repository.name }}): new migrations'
+          body: |
+            Automated sync of new `supabase/migrations/*.sql` from
+            ${{ github.repository }} @ ${{ github.sha }}.
+
+            **Merging this PR deploys them to the hosted project.**
+            Review the SQL before merging.
+          add-paths: supabase/migrations
+          delete-branch: true
