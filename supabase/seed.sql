@@ -19,8 +19,9 @@
 --   member@donate.app  / Password123!  (plain org member)
 -- ====================================================================
 
--- Product schema chain (see migrations/20240814160000_initial_schema.sql)
-SET search_path = donate, shared, extensions, private;
+-- Product schema chain (post 2026-11-04 platform cutover: `private` was
+-- merged into `donate_private` and `public` retired — see AGENTS.md).
+SET search_path = donate, donate_private, shared, extensions;
 
 -- ===========================================================================
 
