@@ -202,12 +202,13 @@ export async function expectOrgProvisioned(
 /** Public campaign discovery — same RPC the landing / /campaigns UI calls. */
 export async function getPublicCampaigns(
   request: APIRequestContext,
-  opts: { zakat?: boolean; limit?: number } = {}
+  opts: { zakat?: boolean; limit?: number; offset?: number } = {}
 ): Promise<PublicCampaign[]> {
   return anonRpc<PublicCampaign[]>(request, 'get_public_campaigns', {
     zakat_filter: opts.zakat ?? null,
     org_filter: null,
     result_limit: opts.limit ?? 50,
+    p_offset: opts.offset ?? 0,
   })
 }
 

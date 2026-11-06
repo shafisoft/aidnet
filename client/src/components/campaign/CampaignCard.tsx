@@ -1,8 +1,12 @@
 import Link from 'next/link'
 import { useTranslation } from 'react-i18next'
-import type { PublicCampaign } from '@/types'
+import type { PublicCampaignSummary } from '@/types'
 
-export function CampaignCard({ campaign }: { campaign: PublicCampaign }) {
+export function CampaignCard({
+  campaign,
+}: {
+  campaign: PublicCampaignSummary
+}) {
   const { t } = useTranslation()
   const goal = campaign.goal_amount
   const raised = campaign.raised_amount ?? 0

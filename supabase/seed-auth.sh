@@ -14,7 +14,7 @@
 #                                         the org-cleanup sweep below deletes any
 #                                         personal org left by earlier runs, so
 #                                         every run starts truly org-less)
-#   + 14 LIVE demo campaigns (1 zakat) + donation methods for the org
+#   + 30 LIVE demo campaigns (1 zakat) + donation methods for the org
 # ====================================================================
 set -euo pipefail
 
@@ -181,11 +181,13 @@ BEGIN
   SELECT id INTO v_owner_id FROM profiles WHERE email = '${OWNER_EMAIL}';
   IF v_org IS NULL THEN RAISE EXCEPTION 'demo org not found'; END IF;
 
+  -- 30 live campaigns: the /campaigns Load-more e2e needs more than one
+  -- page (default page size 24). ON CONFLICT keeps re-runs idempotent.
   INSERT INTO campaigns (org_id, title, slug, description, goal_amount, currency, is_zakat_eligible, status, is_active, created_by)
   SELECT v_org, 'Demo Campaign ' || g, 'demo-campaign-' || g,
          'A humanitarian campaign seeded for local testing.', 100000 + g*1000, 'BDT',
          (g = 1), 'live', true, v_owner_id
-  FROM generate_series(1,14) g
+  FROM generate_series(1,30) g
   ON CONFLICT (slug) DO NOTHING;
 
   INSERT INTO donation_methods (organization_id, bkash_number, bkash_account_name, nagad_number, bank_name, bank_account_number, donation_url, is_preferred)

@@ -48,6 +48,7 @@ export type {
   PublicBankInfo,
   PublicCampaign,
   PublicCampaignFilters,
+  PublicCampaignSummary,
   PublicDonationReport,
   PublicMobileChannel,
   UpdateCampaignDto,

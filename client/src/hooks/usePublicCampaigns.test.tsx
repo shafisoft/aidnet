@@ -2,7 +2,7 @@ import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { renderHook, waitFor } from '@testing-library/react'
 
 import { usePublicCampaigns } from './usePublicCampaigns'
-import { aPublicCampaign } from '@/testing/fixtures'
+import { aPublicCampaignSummary } from '@/testing/fixtures'
 
 const mockGetMany = vi.hoisted(() => vi.fn())
 
@@ -56,7 +56,7 @@ describe('usePublicCampaigns', () => {
   })
 
   it('When campaigns load, exposes the rows', async () => {
-    const rows = [aPublicCampaign()]
+    const rows = [aPublicCampaignSummary()]
     mockGetMany.mockResolvedValue({ data: rows, error: null })
 
     const { result } = setup({})
@@ -64,6 +64,52 @@ describe('usePublicCampaigns', () => {
     await waitFor(() => expect(result.current.loading).toBe(false))
     expect(result.current.campaigns).toEqual(rows)
     expect(result.current.error).toBeNull()
+  })
+
+  it('When a full page returns, hasMore is true and loadMore appends the next page', async () => {
+    const page1 = [1, 2, 3].map(i => aPublicCampaignSummary({ id: `c${i}` }))
+    const page2 = [4, 5].map(i => aPublicCampaignSummary({ id: `c${i}` }))
+    mockGetMany
+      .mockResolvedValueOnce({ data: page1, error: null })
+      .mockResolvedValueOnce({ data: page2, error: null })
+
+    const { result } = setup({ limit: 3 })
+    await waitFor(() => expect(result.current.loading).toBe(false))
+    expect(result.current.hasMore).toBe(true)
+
+    result.current.loadMore()
+    await waitFor(() => expect(result.current.loadingMore).toBe(false))
+
+    expect(mockGetMany).toHaveBeenLastCalledWith({
+      zakat: null,
+      org: null,
+      limit: 3,
+      offset: 3,
+    })
+    expect(result.current.campaigns.map(c => c.id)).toEqual([
+      'c1',
+      'c2',
+      'c3',
+      'c4',
+      'c5',
+    ])
+    // Partial page → no more to fetch.
+    expect(result.current.hasMore).toBe(false)
+  })
+
+  it('When a partial page returns, hasMore is false and loadMore is a no-op', async () => {
+    mockGetMany.mockResolvedValue({
+      data: [aPublicCampaignSummary()],
+      error: null,
+    })
+
+    const { result } = setup({})
+    await waitFor(() => expect(result.current.loading).toBe(false))
+    expect(result.current.hasMore).toBe(false)
+
+    result.current.loadMore()
+    await waitFor(() => expect(result.current.loadingMore).toBe(false))
+    expect(mockGetMany).toHaveBeenCalledTimes(1)
   })
 
   it('When the RPC fails, surfaces the error and empties the list', async () => {

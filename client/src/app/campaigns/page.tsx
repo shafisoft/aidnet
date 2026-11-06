@@ -22,7 +22,8 @@ function CampaignsContent() {
   const org = orgParam && isUuid(orgParam) ? orgParam : null
 
   usePageTitle(t('campaigns.pageTitle'))
-  const { campaigns, loading, error } = usePublicCampaigns({ zakat, org })
+  const { campaigns, loading, loadingMore, hasMore, error, loadMore } =
+    usePublicCampaigns({ zakat, org })
   // The org filter arrives as an id with no name attached; the campaign
   // rows carry their org_name, so the active-filter pill can name it.
   const orgName = campaigns[0]?.org_name
@@ -153,10 +154,26 @@ function CampaignsContent() {
         )}
 
         {!loading && !error && campaigns.length > 0 && (
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {campaigns.map(c => (
-              <CampaignCard key={c.id} campaign={c} />
-            ))}
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {campaigns.map(c => (
+                <CampaignCard key={c.id} campaign={c} />
+              ))}
+            </div>
+            {hasMore && (
+              <div className="flex justify-center">
+                <button
+                  type="button"
+                  onClick={loadMore}
+                  disabled={loadingMore}
+                  className="rounded-md border border-indigo-600 px-6 py-2.5 text-sm font-medium text-indigo-600 hover:bg-indigo-50 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {loadingMore
+                    ? t('campaigns.loadingMore')
+                    : t('campaigns.loadMore')}
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>

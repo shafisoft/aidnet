@@ -21,6 +21,7 @@ import type {
   SystemStats,
 } from '@/types'
 import type { PublicOrg } from '@/repositories/PublicOrgRepository'
+import type { RpcReturn } from '@/types/rpc'
 
 const TS = '2026-01-01T00:00:00Z'
 
@@ -108,6 +109,26 @@ export const aPublicCampaign = (
   updated_at: TS,
   donation_methods: null,
   tags: [],
+  ...over,
+})
+
+/** Listing row from get_public_campaigns — typed against the RPC return so
+ * a schema change breaks this fixture loudly (see test-creation-guideline). */
+export const aPublicCampaignSummary = (
+  over: Partial<RpcReturn<'get_public_campaigns'>[number]> = {}
+): RpcReturn<'get_public_campaigns'>[number] => ({
+  id: 'camp-1',
+  org_id: 'org-1',
+  org_name: 'Demo Org',
+  title: 'Build a school',
+  slug: 'build-a-school',
+  description: 'A humanitarian campaign.',
+  cover_image_url: 'https://example.com/cover.jpg',
+  goal_amount: 100000,
+  raised_amount: 0,
+  pending_amount: 0,
+  currency: 'BDT',
+  is_zakat_eligible: false,
   ...over,
 })
 

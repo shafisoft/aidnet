@@ -117,6 +117,8 @@
     "showingCount_one": "Showing {{count}} campaign",
     "showingCount_other": "Showing {{count}} campaigns",
     "loading": "Loading campaigns...",
+    "loadMore": "Load more campaigns",
+    "loadingMore": "Loading more...",
     "error": "We couldn't load campaigns right now. Please try again.",
     "zakatHint": "The organization running the campaign determines and declares whether it is zakat-eligible.",
     "emptyZakat": "No zakat-eligible campaigns found.",

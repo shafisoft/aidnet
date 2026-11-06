@@ -108,6 +108,79 @@ test.describe('Public discovery + filters', () => {
     await expect(page).toHaveURL(/\/campaigns\/?$/)
   })
 
+  // Pagination contract: the RPC pages by limit+offset and the UI paginates
+  // on top of it (seed-auth.sh plants 30 live demo campaigns > page size 24).
+  test('When the RPC pages, limit and offset return disjoint slices', async ({
+    request,
+  }) => {
+    test.skip(
+      !SUPABASE_URL,
+      'NEXT_PUBLIC_SUPABASE_URL not set — skipping API check'
+    )
+    const page1 = await getPublicCampaigns(request, { limit: 5 })
+    const page2 = await getPublicCampaigns(request, { limit: 5, offset: 5 })
+
+    expect(page1).toHaveLength(5)
+    expect(page2).toHaveLength(5)
+    const page1Ids = new Set(page1.map(c => c.id))
+    for (const c of page2) {
+      expect(page1Ids.has(c.id), 'offset must not repeat page-1 rows').toBe(
+        false
+      )
+    }
+  })
+
+  test('When anon loads /campaigns with more than a page of live campaigns, only the first page renders', async ({
+    page,
+    request,
+  }) => {
+    test.skip(
+      !SUPABASE_URL,
+      'NEXT_PUBLIC_SUPABASE_URL not set — skipping API check'
+    )
+    // Seed guard: pagination UI only shows when total > page size (24).
+    let total = 0
+    await expect
+      .poll(async () => {
+        total = (await getPublicCampaigns(request, { limit: 100 })).length
+        return total
+      })
+      .toBeGreaterThan(24)
+
+    await gotoStable(page, '/campaigns')
+    await expect(
+      page.getByRole('heading', { name: 'Discover Campaigns' })
+    ).toBeVisible()
+    await expect(page.locator('a[href^="/campaigns/detail"]')).toHaveCount(24)
+  })
+
+  test('When anon clicks Load more campaigns, the remaining campaigns render and the button disappears', async ({
+    page,
+    request,
+  }) => {
+    test.skip(
+      !SUPABASE_URL,
+      'NEXT_PUBLIC_SUPABASE_URL not set — skipping API check'
+    )
+    let total = 0
+    await expect
+      .poll(async () => {
+        total = (await getPublicCampaigns(request, { limit: 100 })).length
+        return total
+      })
+      .toBeGreaterThan(24)
+
+    await gotoStable(page, '/campaigns')
+    const cards = page.locator('a[href^="/campaigns/detail"]')
+    await expect(cards).toHaveCount(24)
+
+    await page.getByRole('button', { name: 'Load more campaigns' }).click()
+    await expect(cards).toHaveCount(total)
+    await expect(
+      page.getByRole('button', { name: 'Load more campaigns' })
+    ).toBeHidden()
+  })
+
   test('When anon clicks Home, navigates to landing', async ({ page }) => {
     await gotoStable(page, '/campaigns/')
     await page.getByRole('link', { name: /Home/ }).click()

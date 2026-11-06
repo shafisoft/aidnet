@@ -1,6 +1,7 @@
 import type {
   PublicCampaign,
   PublicCampaignFilters,
+  PublicCampaignSummary,
   ServiceData,
 } from '@/types'
 import { PublicCampaignRepository } from '@/repositories/PublicCampaignRepository'
@@ -12,7 +13,7 @@ export class PublicCampaignService {
 
   async getPublicCampaigns(
     filters: PublicCampaignFilters = {}
-  ): ServiceData<PublicCampaign[]> {
+  ): ServiceData<PublicCampaignSummary[]> {
     return this.publicCampaignRepo.getPublicCampaigns(filters)
   }
 

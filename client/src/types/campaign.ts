@@ -120,6 +120,28 @@ export type CampaignPaymentInfo = {
   is_preferred: boolean
 }
 
+/**
+ * Listing payload from get_public_campaigns — the trimmed shape the card
+ * grid renders. Payment channels and tags live only on the detail
+ * endpoint (get_public_campaign_by_slug); keeping them off the list row
+ * bounds the /campaigns response at O(page size).
+ */
+export type PublicCampaignSummary = Pick<
+  PublicCampaign,
+  | 'id'
+  | 'org_id'
+  | 'org_name'
+  | 'title'
+  | 'slug'
+  | 'description'
+  | 'cover_image_url'
+  | 'goal_amount'
+  | 'raised_amount'
+  | 'pending_amount'
+  | 'currency'
+  | 'is_zakat_eligible'
+>
+
 export type PublicCampaign = {
   id: string
   org_id: string
@@ -247,4 +269,6 @@ export type PublicCampaignFilters = {
   zakat?: boolean | null
   org?: string | null
   limit?: number | null
+  /** Row offset for pagination (get_public_campaigns p_offset). */
+  offset?: number | null
 }

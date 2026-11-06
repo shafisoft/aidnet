@@ -352,7 +352,7 @@ export type Database = {
       }
       get_my_profile: {
         Args: Record<PropertyKey, never>
-        Returns: Database['shared']['Tables']['profiles']['Row'][]
+        Returns: unknown[]
         SetofOptions: {
           from: '*'
           to: 'profiles'
@@ -497,32 +497,23 @@ export type Database = {
       get_public_campaigns: {
         Args: {
           org_filter?: string
+          p_offset?: number
           result_limit?: number
           zakat_filter?: boolean
         }
         Returns: {
-          address: string
           cover_image_url: string
-          created_at: string
           currency: string
           description: string
-          donation_methods: Json
-          end_date: string
           goal_amount: number
           id: string
           is_zakat_eligible: boolean
-          org_description: string
           org_id: string
-          org_logo_url: string
           org_name: string
-          org_slug: string
           pending_amount: number
           raised_amount: number
           slug: string
-          start_date: string
-          tags: Json
           title: string
-          updated_at: string
         }[]
       }
       get_public_donation_reports: {
@@ -1003,42 +994,34 @@ export type Database = {
       [_ in never]: never
     }
   }
-  shared: {
+  graphql_public: {
     Tables: {
-      profiles: {
-        Row: {
-          avatar_url: string | null
-          created_at: string | null
-          email: string
-          full_name: string | null
-          id: string
-          is_system_admin: boolean | null
-          metadata: Json | null
-          updated_at: string | null
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
         }
-        ComputedFields: never
-        Insert: {
-          avatar_url?: string | null
-          created_at?: string | null
-          email: string
-          full_name?: string | null
-          id: string
-          is_system_admin?: boolean | null
-          metadata?: Json | null
-          updated_at?: string | null
-        }
-        Update: {
-          avatar_url?: string | null
-          created_at?: string | null
-          email?: string
-          full_name?: string | null
-          id?: string
-          is_system_admin?: boolean | null
-          metadata?: Json | null
-          updated_at?: string | null
-        }
-        Relationships: []
+        Returns: Json
       }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
+  public: {
+    Tables: {
+      [_ in never]: never
     }
     Views: {
       [_ in never]: never
@@ -1181,7 +1164,10 @@ export const Constants = {
       ],
     },
   },
-  shared: {
+  graphql_public: {
+    Enums: {},
+  },
+  public: {
     Enums: {},
   },
 } as const
