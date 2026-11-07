@@ -172,8 +172,22 @@ so run e2e manually before merging UI changes.
    repository/service — do not grow mixed-audience classes.
 
 **Deploy to production**
-- Backend: link the hosted project, then push migrations. Custom edge functions
-  are banned — the sole exception is `og`, deployed once with its env:
+- Migrations: hosted deploys happen ONLY from the platform repo. Author the
+  migration here, then ship it from the platform checkout (its
+  `docker/products.txt` lists this repo):
+  ```sh
+  sh scripts/sync.sh      # stage it into the ONE consolidated folder
+  sh scripts/deploy.sh    # guard → dry-run → ask → hosted
+  ```
+  Then commit + push both repos — CI on `shafisoft/platform` re-runs the
+  same deploy on merge and will just say "up to date".
+  NEVER `supabase db push`, `config push`, or `migration repair` against
+  hosted from this repo: the migration history table is per-PROJECT and
+  shared by every co-living product — a push from here breaks the siblings.
+  The per-repo `config.production.toml` copy is retired. If the platform
+  guard flags a duplicate version, rename the file HERE first, then sync.
+- Custom edge functions are banned — the sole exception is `og`, deployed
+  once with its env:
   ```sh
   supabase functions deploy og --project-ref <ref> --config-path supabase/config.production.toml
   supabase secrets set SITE_URL=https://<site-origin>[/<base-path>] --project-ref <ref>
@@ -182,22 +196,14 @@ so run e2e manually before merging UI changes.
   ```
   `og` must stay what it is — OG HTML to link-preview crawlers, 302 to humans
   (`verify_jwt = false` in both config files). Do not use it as a precedent.
+- Types: linking for READS is fine; pushing is not.
   ```sh
-  supabase link --project-ref <ref> --config-path supabase/config.production.toml
-  supabase db push --config-path supabase/config.production.toml
-  # regenerate types from the linked project if the schema diverged
   supabase gen types typescript --linked > client/src/types/database.ts
   ```
-- After the first push to a hosted project, expose the `donate` schema on its
-  Data API — hosted projects do NOT inherit `PGRST_DB_SCHEMAS` from the shared
-  local stack (`../platform/docker/.env`). Symptom if skipped: client RPCs fail with
-  `Invalid schema: donate`. Fix once (token = personal access token):
-  ```sh
-  curl -X PATCH "https://api.supabase.com/v1/projects/<ref>/postgrest" \
-    -H "Authorization: Bearer <access-token>" \
-    -H "Content-Type: application/json" -d '{"db_schema": "donate"}'
-  ```
-  (Dashboard equivalent: Project Settings → API → Exposed schemas.)
+- Data API exposure is platform-owned (`supabase/expose.sh` in the platform
+  repo) — `donate` is already exposed. Client RPCs failing with
+  `Invalid schema: donate` means exposure changed without the platform
+  guard; take it there, do not PATCH by hand.
 - Frontend: static export deployed to GitHub Pages by
   `.github/workflows/deploy.yml` (push to `main`, or manual dispatch). Requires
   the repo secrets `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
